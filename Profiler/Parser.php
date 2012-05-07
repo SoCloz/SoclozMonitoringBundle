@@ -1,16 +1,11 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Socloz\MonitoringBundle\Profiler;
 
 /**
- * Description of Parser
+ * A XHprof data parser
  *
- * @author jfb
+ * @author jfbus
  */
 class Parser {
     
@@ -31,6 +26,11 @@ class Parser {
         }
     }
 
+    /**
+     * Parses Xhprof data
+     * 
+     * @param array $data 
+     */
     public function parse($data) {
         if ($this->type == "call") {
             foreach (array_keys($this->calls) as $call) {
@@ -52,19 +52,39 @@ class Parser {
         }
     }
     
+    /**
+     * Adds timing/count data
+     * 
+     * @param array $callData 
+     */
     public function addCallData($callData) {
-        $this->time += $callData['wt']/1000; // ms
-        $this->count++;
+        $this->time += (int) $callData['wt']/1000; // ms
+        $this->count += $callData['ct'];
     }
     
+    /**
+     * Get total wall time for current parser
+     * 
+     * @return int 
+     */
     public function getTime() {
         return $this->time;
     }
     
+    /**
+     * Get total number of calls for current parser
+     * 
+     * @return int 
+     */
     public function getCount() {
         return $this->count;
     }
     
+    /**
+     * Get the parser name
+     * 
+     * @return string 
+     */
     public function getName() {
         return $this->name;
     }
