@@ -9,11 +9,6 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
-/**
- * This is the class that loads and manages your bundle configuration
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
- */
 class SoclozMonitoringExtension extends Extension
 {
     /**
@@ -47,9 +42,15 @@ class SoclozMonitoringExtension extends Extension
                 ->replaceArgument(0, $parsers);
         }
 
-                
     }
     
+    /**
+     * Generates a parser service for a configured parser
+     * 
+     * @param string $name
+     * @param ContainerBuilder $container
+     * @return \Symfony\Component\DependencyInjection\Reference 
+     */
     private function createProfilerParser($name, ContainerBuilder $container)
     {
         $definition = $container->getParameter(sprintf("socloz_monitoring.profiler.parser.definition.%s", $name));

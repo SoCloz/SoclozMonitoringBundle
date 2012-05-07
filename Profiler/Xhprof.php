@@ -1,14 +1,9 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Socloz\MonitoringBundle\Profiler;
 
 /**
- * Description of Xhprof
+ * Xhprof profiler
  *
  * @author jfb
  */
@@ -30,6 +25,9 @@ class Xhprof {
         $this->memory = $memory;
     }
     
+    /**
+     * Starts the profiling 
+     */
     public function startProfiling()
     {
         if (PHP_SAPI == 'cli') {
@@ -44,6 +42,9 @@ class Xhprof {
 
     }
 
+    /**
+     * Stops the profiling & parses data
+     */
     public function stopProfiling()
     {
         if (!$this->profiling) {
@@ -60,10 +61,20 @@ class Xhprof {
         }
     }
 
+    /**
+     * Returns the list of timers
+     * 
+     * @return array 
+     */
     public function getTimers() {
         return $this->timers;
     }
     
+    /**
+     * Returns the list of counters
+     * 
+     * @return array 
+     */
     public function getCounters() {
         return $this->counters;
     }
