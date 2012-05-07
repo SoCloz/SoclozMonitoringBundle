@@ -21,6 +21,7 @@ Profiled data
 
 * *request* : number of HTTP requests (handled by Symfony) / duration of requests
 * *mongodb* : number of mongodb calls (insert/batchInsert/update/save/remove/count/find/findOne) / total duration
+    Nota bene : mongo cursors are not tracked
 
 FAQ
 ---
@@ -88,6 +89,7 @@ Roadmap
 -------
 
 * Parsers : redis
+* Sampling
 * Composer config
 
 Thanks
