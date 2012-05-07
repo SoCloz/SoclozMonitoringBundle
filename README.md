@@ -38,37 +38,27 @@ FAQ
 
 3. *Can it profile database calls ? memcached/redis calls ?*
 
-    Yes (as long as the calls can be identified in xprof data).
-
-    Currently, xhprof parsers are written for :
-
-    * mongodb
-
-    Parsers are planned for :
-
-    * redis
-
-    Contributions are welcomed for other parsers (mysql, pgsql, ...). See `Resources/config/profiler.xml` for examples.
+    Yes (as long as the calls can be identified in xprof data). Contributions are welcomed for new parsers (mysql, pgsql, ...). See `Resources/config/profiler.xml` for examples.
 
 Setup
 -----
 
-1. Install dependencies
+* Install dependencies
 
-2. Install & activate the module
+* Install & activate the module
 
-3. Configure the module
+* Configure the module
 
-    * `socloz_monitoring.mailer.from` : source email of the exception alert mails
-    * `socloz_monitoring.mailer.to` : destination email of the exception alert mails
-    * `socloz_monitoring.statsd.host` : IP address/hostname of the statsd server
-    * `socloz_monitoring.statsd.port` : port ot the statsd server
-    * `socloz_monitoring.statsd.prefix` : prefix of the statsd keys
+    `socloz_monitoring.mailer.from` : source email of the exception alert mails
+    `socloz_monitoring.mailer.to` : destination email of the exception alert mails
+    `socloz_monitoring.statsd.host` : IP address/hostname of the statsd server
+    `socloz_monitoring.statsd.port` : port ot the statsd server
+    `socloz_monitoring.statsd.prefix` : prefix of the statsd keys
 
-4. Decide what you want to profile :
+* Decide what you want to profile :
 
-    * `socloz_monitoring.profiling.request` : HTTP requests (handled by Symfony)
-    * `socloz_monitoring.profiling.mongodb` : MongoDB calls
+    `socloz_monitoring.profiling.request` : HTTP requests (handled by Symfony)
+    `socloz_monitoring.profiling.mongodb` : MongoDB calls
     
 The statsd data is (on unmodified configs - type = mongodb or request) :
 
@@ -101,6 +91,12 @@ Hints
 Graphite hints
 
 * *number of mongo calls per request* : divideSeries(stats_counts.prefix.mongodb, stats_counts.prefix.request)
+
+Roadmap
+-------
+
+* Parsers : redis
+* Composer config
 
 Thanks
 ------
