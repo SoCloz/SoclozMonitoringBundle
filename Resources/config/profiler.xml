@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="socloz_monitoring.profiler.listener.class">Socloz\MonitoringBundle\Listener\Profiler</parameter>
+        <parameter key="socloz_monitoring.profiler.class">Socloz\MonitoringBundle\Profiler\Xhprof</parameter>
+        <parameter key="socloz_monitoring.profiler.parser.class">Socloz\MonitoringBundle\Profiler\Parser</parameter>
+        <parameter key="socloz_monitoring.profiler.parser.definition.mongodb" type="collection">
+            <parameter key="type">callee</parameter>
+            <parameter key="calls" type="collection">
+                <parameter>MongoCollection::batchInsert</parameter>
+                <parameter>MongoCollection::insert</parameter>
+                <parameter>MongoCollection::update</parameter>
+                <parameter>MongoCollection::save</parameter>
+                <parameter>MongoCollection::remove</parameter>
+                <parameter>MongoCollection::find</parameter>
+                <parameter>MongoCollection::findOne</parameter>
+                <parameter>MongoCollection::count</parameter>
+            </parameter>
+        </parameter>
+        <parameter key="socloz_monitoring.profiler.parser.definition.request" type="collection">
+            <parameter key="type">call</parameter>
+            <parameter key="calls" type="collection">
+                <parameter>main()</parameter>
+            </parameter>
+        </parameter>
+        <parameter key="socloz_monitoring.profiler.parser.definition.calls" type="collection">
+            <parameter key="type">callee</parameter>
+            <parameter key="calls">%socloz_monitoring.profiler.calls%</parameter>
+        </parameter>
+    </parameters>
+
+    <services>
+        <service id="socloz_monitoring.profiler" class="%socloz_monitoring.profiler.class%" >
+            <argument />
+            <argument>%socloz_monitoring.profiler.memory%</argument>
+        </service>
+
+        <service id="socloz_monitoring.profiler.listener" class="%socloz_monitoring.profiler.listener.class%" >
+            <tag name="kernel.event_listener" event="kernel.response" method="onCoreResponse" priority="-10000" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onCoreRequest" priority="10000" />
+            <argument type="service" id="socloz_monitoring.profiler" />
+            <argument type="service" id="socloz_monitoring.statsd" />
+        </service>
+
+        <service id="socloz_monitoring.profiler.parser" class="%socloz_monitoring.profiler.parser.class%" >
+            <argument />
+            <argument />
+        </service>
+    </services>
+</container>

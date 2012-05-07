@@ -1,0 +1,38 @@
+<h2>{{ exception_class }} : {{ exception.message }}</h2>
+
+<h3>Information:</h3>
+<strong>Generated at: </strong> {{ "now"|date("d-m-Y H:i:s") }} <br />
+<strong>Class name: </strong> {{ exception_class }} <br />
+<strong>Message: </strong> {{ exception.message }} <br />
+<strong>Uri: </strong> {{ request.uri }} <br />
+
+{% if request_attributes %}
+<h3>Request Attributes:</h3>
+{% for key, header in request_attributes %}
+    <strong>{{ key }}</strong>: {{ header }}<br />
+{% endfor %}
+{% endif %}
+
+<h3>Stack trace:</h3>
+{% for trace in exception.trace %}
+    #{{ loop.index0 }} - 
+        {% if trace.class is defined %}
+            {{ trace.class }}{{ trace.type }}{{ trace.function }}()
+        {% else %}
+            {{ trace.function }}()
+        {% endif %} 
+        {% if trace.file is defined %}
+            in {{ trace.file }} line {{ trace.line }}
+        {% endif %}
+    <br />
+{% endfor %}
+
+<h3>Request Headers:</h3>
+{% for key, header in request_headers %}
+    <strong>{{ key }}</strong>: {{ header }}<br />
+{% endfor %}
+
+<h3>Request Server Parameters:</h3>
+{% for key, header in server_params %}
+    <strong>{{ key }}</strong>: {{ header }}<br />
+{% endfor %}

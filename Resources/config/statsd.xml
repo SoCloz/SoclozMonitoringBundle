@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="socloz_monitoring.statsd.class">Socloz\MonitoringBundle\Notify\StatsD</parameter>
+    </parameters>
+    
+    <services>
+        <service id="socloz_monitoring.statsd" class="%socloz_monitoring.statsd.class%">
+            <argument>%socloz_monitoring.statsd.host%</argument>
+            <argument>%socloz_monitoring.statsd.port%</argument>
+            <argument>%socloz_monitoring.statsd.prefix%</argument>
+        </service>
+    </services>
+</container>

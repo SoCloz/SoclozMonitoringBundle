@@ -1,0 +1,58 @@
+<?php
+
+namespace Socloz\MonitoringBundle\DependencyInjection;
+
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
+
+/**
+ * This is the class that validates and merges configuration from your app/config files
+ *
+ * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
+ */
+class Configuration implements ConfigurationInterface
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function getConfigTreeBuilder()
+    {
+        $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder->root('socloz_monitoring');
+
+        $rootNode
+            ->children()
+                ->arrayNode('exceptions')
+                    ->children()
+                        ->booleanNode('enable')->defaultValue(true)->end()
+                        ->variableNode('ignore')->defaultValue(array('Symfony\Component\HttpKernel\Exception\NotFoundHttpException'))->end()
+                    ->end()
+                ->end()
+                ->arrayNode('profiler')
+                    ->children()
+                        ->booleanNode('enable')->defaultValue(true)->end()
+                        ->booleanNode('mongodb')->defaultValue(false)->end()
+                        ->booleanNode('request')->defaultValue(false)->end()
+                        ->booleanNode('memory')->defaultValue(false)->end()
+                        ->variableNode('calls')->defaultValue(array())->end()
+                    ->end()
+                ->end()
+                ->arrayNode('mailer')
+                    ->children()
+                        ->booleanNode('enable')->defaultValue(true)->end()
+                        ->scalarNode('from')->end()
+                        ->scalarNode('to')->end()
+                    ->end()
+                ->end()
+                ->arrayNode('statsd')
+                    ->children()
+                        ->booleanNode('enable')->defaultValue(false)->end()
+                        ->scalarNode('host')->end()
+                        ->scalarNode('port')->end()
+                        ->scalarNode('prefix')->defaultValue('socloz_monitoring')->end()
+                    ->end()
+                ->end();
+
+        return $treeBuilder;
+    }
+}

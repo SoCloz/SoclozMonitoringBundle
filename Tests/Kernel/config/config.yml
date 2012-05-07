@@ -1,0 +1,23 @@
+framework:
+  router:        { resource: "%kernel.root_dir%/config/routing.yml" }
+  secret: mysecret
+
+parameters:
+  socloz_monitoring.mailer.class: Socloz\MonitoringBundle\Tests\Mocks\MailerMock
+  socloz_monitoring.statsd.class: Socloz\MonitoringBundle\Tests\Mocks\StatsDMock
+  
+socloz_monitoring:
+  exceptions:
+    enable: true
+  profiler:
+    enable: true
+    request: true
+  mailer:
+    enable: true
+    from: email@example.com
+    to: email@example.com
+  statsd:
+    enable: true
+    host: nowhere
+    port: 4242
+
