@@ -12,6 +12,7 @@ use Socloz\MonitoringBundle\Notify\StatsD;
  * Error notification listener
  *
  * @author Szymon Szewczyk <s.szewczyk@roxway.pl>
+ * @author jfbus <jf@closetome.fr>
  */
 class Exceptions {
 

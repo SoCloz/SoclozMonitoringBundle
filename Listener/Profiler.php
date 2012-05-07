@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  * The handle method must be connected to the core.request event.
  *
  * @author Jonas Wouters <hello@jonaswouters.be>
+ * @author jfbus <jf@closetome.fr>
  */
 class Profiler
 {
