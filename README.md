@@ -41,10 +41,14 @@ FAQ
 
     Yes (as long as the calls can be identified in xprof data). Contributions are welcomed for new parsers (mysql, pgsql, ...). See `Resources/config/profiler.xml` for examples.
 
+4. *Are yo hiring ?*
+
+    Yes. If you are looking for a job in Paris, France, send a mail to techjobs AT closetome DOT fr
+
 Setup
 -----
 
-* Install dependencies
+* Install `xhprof`, `statsd` and a graphing backend (i.e. `graphite`)
 
 * Install & activate the module
 
@@ -88,8 +92,9 @@ Graphite hints
 Roadmap
 -------
 
-* Parsers : redis
+* Parsers : redis, sphinx
 * Sampling
+* Parser tuning
 * Composer config
 
 Thanks
