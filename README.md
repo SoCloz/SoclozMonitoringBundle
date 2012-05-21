@@ -87,11 +87,11 @@ Graphing application data
 
 It is possible to send some application data to statsd :
 
-* counters :
+Counters :
 
     $container->get('socloz_monitoring.statsd')->increment("prefix.counter_name", $number);
 
-* timers :
+Timers :
 
     $start = microtime(true);
     // do some stuff
@@ -110,7 +110,7 @@ Graphite hints
 Roadmap
 -------
 
-* Parsers : redis, sphinx
+* Parsers : redis, sphinx, mysql, memcached
 * Sampling
 * Parser tuning
 * Composer config
@@ -127,4 +127,4 @@ Xhprof listener inpired by [JnsXhprofBundle](https://github.com/jonaswouters/Xhp
 License
 -------
 
-This bundle is under the MIT license (see LICENSE).
+This bundle is released under the MIT license (see LICENSE).
