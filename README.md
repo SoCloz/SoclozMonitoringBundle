@@ -82,6 +82,24 @@ The default configuration is :
             port:
             prefix: socloz_monitoring
 
+Graphing application data
+-------------------------
+
+It is possible to send some application data to statsd :
+
+* counters :
+
+    $container->get('socloz_monitoring.statsd')->increment("prefix.counter_name", $number);
+
+* timers :
+
+    $start = microtime(true);
+    // do some stuff
+    $end = microtime(true);
+    $container->get('socloz_monitoring.statsd')->timing("prefix.timer_name", ($end-$start)*1000);
+
+Just make sure you don't have any name collisions between your counters/timers and the standard ones.
+
 Hints
 -----
 
