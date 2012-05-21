@@ -89,7 +89,7 @@ It is possible to send some application data to statsd :
 
 Counters :
 
-    $container->get('socloz_monitoring.statsd')->increment("prefix.counter_name", $number);
+    $container->get('socloz_monitoring.statsd')->updateStats("prefix.counter_name", $number);
 
 Timers :
 
@@ -114,6 +114,7 @@ Roadmap
 * Sampling
 * Parser tuning
 * Composer config
+* Batching of statsd messages
 
 Thanks
 ------
