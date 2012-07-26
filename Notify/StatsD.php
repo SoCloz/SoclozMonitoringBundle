@@ -100,7 +100,7 @@ class StatsD {
                 fwrite($fp, "$this->prefix.$stat:$value");
             }
             fclose($fp);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
     }
 
