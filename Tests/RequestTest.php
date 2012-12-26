@@ -35,6 +35,7 @@ class RequestTest extends WebTestCase
 
     public function testTiming()
     {
+        $this->fail('Needs update');
         try {
             $crawler = $this->client->request('GET', '/socloz_monitoring/timing/5');
         } catch (\Exception $e) {
