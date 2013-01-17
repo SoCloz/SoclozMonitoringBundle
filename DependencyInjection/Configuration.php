@@ -20,7 +20,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('exceptions')
                     ->children()
                         ->booleanNode('enable')->defaultValue(true)->end()
-                        ->variableNode('ignore')->defaultValue(array('Symfony\Component\HttpKernel\Exception\NotFoundHttpException'))->end()
+                        ->variableNode('ignore')->defaultValue(array('Symfony\Component\HttpKernel\Exception\NotFoundHttpException', 'Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException'))->end()
                     ->end()
                 ->end()
                 ->arrayNode('profiler')
