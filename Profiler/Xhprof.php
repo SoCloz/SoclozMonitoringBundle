@@ -53,8 +53,14 @@ class Xhprof {
 
         $this->profiling = false;
         $xhprof_data = xhprof_disable();
+        if (is_array($xhprof_data)) {
+            foreach ($xhprof_data as $call => $callData) {
+                foreach ($this->parsers as $parser) {
+                    $parser->match($call, $callData);
+                }
+            }
+        }
         foreach ($this->parsers as $parser) {
-            $parser->parse($xhprof_data);
             $name = $parser->getName();
             $this->timers[$name] = $parser->getTime();
             $this->counters[$name] = $parser->getCount();

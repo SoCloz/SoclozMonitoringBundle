@@ -29,26 +29,22 @@ class Parser {
     /**
      * Parses Xhprof data
      * 
-     * @param array $data 
+     * @param string $callerCallee
+     * @param array $callData 
      */
-    public function parse($data) {
-        if ($this->type == "call") {
-            foreach (array_keys($this->calls) as $call) {
-                if (isset($data[$call])) {
-                    $this->addCallData($data[$call]);
-                }
+    public function match($call, $callData) {
+        if ($this->type != "call") {
+            $callArr = explode("==>", $call);
+            if (count($callArr) != 2) {
+                return;
             }
-        } else {
-            foreach ($data as $callerCallee => $callData) {
-                $callArr = explode("==>", $callerCallee);
-                if (count($callArr) != 2) {
-                    continue;
-                }
-                $call = ($this->type == "caller" ? $callArr[0] : $callArr[1]);
-                if (isset($this->calls[$call])) {
-                    $this->addCallData($callData);
-                }
+            $call = ($this->type == "caller" || $this->type == "caller_class" ? $callArr[0] : $callArr[1]);
+            if (($this->type == "caller_class" || $this->type == "callee_class") && $pos = strpos($call, "::")) {
+                $call = substr($call, 0, $pos);
             }
+        }
+        if (isset($this->calls[$call])) {
+            $this->addCallData($callData);
         }
     }
     
