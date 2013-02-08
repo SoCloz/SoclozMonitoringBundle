@@ -21,6 +21,30 @@
                 <parameter>MongoCollection::count</parameter>
             </parameter>
         </parameter>
+        <parameter key="socloz_monitoring.profiler.parser.definition.sphinx" type="collection">
+            <parameter key="type">callee</parameter>
+            <parameter key="calls" type="collection">
+                <parameter>SphinxClient::query</parameter>
+                <parameter>SphinxClient::runQueries</parameter>
+                <parameter>SphinxClient::updateAttributes</parameter>
+                <parameter>SphinxClient::buildExcerpts</parameter>
+                <parameter>SphinxClient::buildKeywords</parameter>
+            </parameter>
+        </parameter>
+        <parameter key="socloz_monitoring.profiler.parser.definition.redis" type="collection">
+            <parameter key="type">callee_class</parameter>
+            <parameter key="calls" type="collection">
+                <parameter>Redis</parameter>
+                <parameter>RedisArray</parameter>
+            </parameter>
+        </parameter>
+        <parameter key="socloz_monitoring.profiler.parser.definition.curl" type="collection">
+            <parameter key="type">callee</parameter>
+            <parameter key="calls" type="collection">
+                <parameter>curl_exec</parameter>
+                <parameter>curl_multiexec</parameter>
+            </parameter>
+        </parameter>
         <parameter key="socloz_monitoring.profiler.parser.definition.request" type="collection">
             <parameter key="type">call</parameter>
             <parameter key="calls" type="collection">

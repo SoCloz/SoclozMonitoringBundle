@@ -22,6 +22,9 @@ Profiled data
 * *request* : number of HTTP requests (handled by Symfony) / duration of requests
 * *mongodb* : number of mongodb calls (insert/batchInsert/update/save/remove/count/find/findOne) / total duration
     Nota bene : mongo cursors are not tracked
+* *redis* : number of redis calls / total duration (only phpredis calls are tracked - http://github.com/nicolasff/phpredis)
+* *sphinx* : number of sphinx calls (query/runQueries/updateAttributes/buildExcerpts/buildKeywords) / total duration
+* *curl* : number or curl calls (curl_exec/curl_multi_exec) / total duration
 
 FAQ
 ---
@@ -37,7 +40,7 @@ FAQ
 * activate xhprof only on a couple servers. The module will disable profiling if xhprof is absent.
 * enable sampling when it will be implemented.
 
-3. *Can it profile database calls ? memcached/redis calls ?*
+3. *Can it profile database calls ? memcached calls ?*
 
     Yes (as long as the calls can be identified in xprof data). Contributions are welcomed for new parsers (mysql, pgsql, ...). See `Resources/config/profiler.xml` for examples.
 
@@ -67,11 +70,13 @@ The default configuration is :
     socloz_monitoring:
         exceptions:
             enable: true
-            ignore: ['Symfony\Component\HttpKernel\Exception\NotFoundHttpException']
+            ignore: ['Symfony\Component\HttpKernel\Exception\NotFoundHttpException','Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException']
         profiler:
             enable: true
             mongodb: false
             request: false
+            redis: false
+            sphinx: false
         mailer:
             enable: true
             from: 
@@ -110,7 +115,7 @@ Graphite hints
 Roadmap
 -------
 
-* Parsers : redis, sphinx, mysql, memcached
+* Parsers : mysql, memcached
 * Sampling
 * Parser tuning
 * Composer config
