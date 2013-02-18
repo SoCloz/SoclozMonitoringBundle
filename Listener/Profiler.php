@@ -23,16 +23,21 @@ class Profiler
 {
     protected $profiler;
     protected $statsd;
+    protected $sampling;
 
-    public function __construct($profiler, $statsd)
+    public function __construct($profiler, $statsd, $sampling)
     {
         $this->profiler = $profiler;
         $this->statsd = $statsd;
+        $this->sampling = $sampling;
     }
 
     public function onCoreRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
+            if ($this->sampling != 100 && mt_rand(1, 100) > $this->sampling) {
+                return;
+            }
             $this->profiler->startProfiling();
         }
     }
@@ -40,18 +45,18 @@ class Profiler
     public function onCoreResponse(FilterResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            $this->profiler->stopProfiling();
-            $timers = $this->profiler->getTimers();
-            $counters = $this->profiler->getCounters();
-            if ($this->statsd) {
-                foreach ($timers as $key => $value) {
-                    $this->statsd->timing($key, $value);
-                }
-                foreach ($counters as $key => $value) {
-                    $this->statsd->updateStats($key, $value);
+            if ($this->profiler->stopProfiling()) {
+                $timers = $this->profiler->getTimers();
+                $counters = $this->profiler->getCounters();
+                if ($this->statsd) {
+                    foreach ($timers as $key => $value) {
+                        $this->statsd->timing($key, $value, $this->sampling/100);
+                    }
+                    foreach ($counters as $key => $value) {
+                        $this->statsd->updateStats($key, $value, $this->sampling/100);
+                    }
                 }
             }
-            
         }
     }
 }

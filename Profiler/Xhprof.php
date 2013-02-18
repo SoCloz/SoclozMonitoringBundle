@@ -44,11 +44,12 @@ class Xhprof {
 
     /**
      * Stops the profiling & parses data
+     * @return boolean $enabled
      */
     public function stopProfiling()
     {
         if (!$this->profiling) {
-            return;
+            return false;
         }
 
         $this->profiling = false;
@@ -65,6 +66,8 @@ class Xhprof {
             $this->timers[$name] = $parser->getTime();
             $this->counters[$name] = $parser->getCount();
         }
+        
+        return true;
     }
 
     /**

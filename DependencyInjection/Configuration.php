@@ -26,6 +26,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('profiler')
                     ->children()
                         ->booleanNode('enable')->defaultValue(true)->end()
+                        ->scalarNode('sampling')->defaultValue(100)->end()
                         ->booleanNode('mongodb')->defaultValue(false)->end()
                         ->booleanNode('request')->defaultValue(false)->end()
                         ->booleanNode('memory')->defaultValue(false)->end()

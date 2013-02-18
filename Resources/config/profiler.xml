@@ -68,6 +68,7 @@
             <tag name="kernel.event_listener" event="kernel.request" method="onCoreRequest" priority="10000" />
             <argument type="service" id="socloz_monitoring.profiler" />
             <argument type="service" id="socloz_monitoring.statsd" />
+            <argument>%socloz_monitoring.profiler.sampling%</argument>
         </service>
 
         <service id="socloz_monitoring.profiler.parser" class="%socloz_monitoring.profiler.parser.class%" >

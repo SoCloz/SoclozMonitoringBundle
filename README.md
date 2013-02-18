@@ -35,10 +35,10 @@ FAQ
 
 2. *What is the overhead ?*
 
-    For now, xhprof is activated on every request. Sampling is planned in the future. On large sites, the recommended setup is :
+    On large sites, the recommended setup is :
 
 * activate xhprof only on a couple servers. The module will disable profiling if xhprof is absent.
-* enable sampling when it will be implemented.
+* enable sampling. By default, all requests are profiled; you can lower the number of requests porfiled by setting socloz_monitoring.profiler.sampling (a value 50 will profile 50% of requests).
 
 3. *Can it profile database calls ? memcached calls ?*
 
@@ -73,6 +73,7 @@ The default configuration is :
             ignore: ['Symfony\Component\HttpKernel\Exception\NotFoundHttpException','Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException']
         profiler:
             enable: true
+            sampling: 100
             mongodb: false
             request: false
             redis: false
@@ -116,9 +117,7 @@ Roadmap
 -------
 
 * Parsers : mysql, memcached
-* Sampling
 * Parser tuning
-* Composer config
 * Batching of statsd messages
 
 Thanks

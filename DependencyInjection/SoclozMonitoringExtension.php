@@ -35,7 +35,7 @@ class SoclozMonitoringExtension extends Extension
         if ($config['profiler']['enable']) {
             $parsers = array();
             foreach ($config['profiler'] as $key => $value) {
-                if ($key == 'enable' || !$value) { continue; }
+                if ($key == 'enable' || $key == "sampling" || !$value) { continue; }
                 $parsers[] = $this->createProfilerParser($key, $container);
             }
             $container->getDefinition('socloz_monitoring.profiler')
