@@ -14,12 +14,16 @@ class StatsD {
     protected $host;
     protected $port;
     protected $prefix;
-
+    protected $doNotTrack = false;
 
     public function __construct($host, $port, $prefix) {
         $this->host = $host;
         $this->port = $port;
         $this->prefix = $prefix;
+    }
+    
+    public function doNotTrack() {
+        $this->doNotTrack = true;
     }
     
     /**
@@ -77,6 +81,9 @@ class StatsD {
      * Squirt the metrics over UDP
      **/
     public function send($data, $sampleRate=1) {
+        if ($this->doNotTrack) {
+            return;
+        }
         // sampling
         $sampledData = array();
 
