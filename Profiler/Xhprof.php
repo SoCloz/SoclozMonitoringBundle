@@ -14,15 +14,20 @@ class Xhprof {
     protected $mailer;
     protected $statsd;
     
-    protected $parsers;
+    protected $parser;
+    protected $probes;
     protected $memory;
     
     protected $timers = array();
     protected $counters = array();
     
-    public function __construct($parsers, $memory) {
-        $this->parsers = $parsers;
+    protected $start;
+    
+    public function __construct($parserClass, $probes, $memory) {
+        $this->parser = new $parserClass($probes);
+        $this->probes = $probes;
         $this->memory = $memory;
+        $this->counters['request'] = 1;
     }
     
     /**
@@ -39,7 +44,7 @@ class Xhprof {
             $this->profiling = true;
             xhprof_enable($this->memory ? XHPROF_FLAGS_MEMORY : null);
         }
-
+        $this->start = microtime(true);
     }
 
     /**
@@ -51,20 +56,22 @@ class Xhprof {
         if (!$this->profiling) {
             return false;
         }
-
+        $requestTime = microtime(true) - $this->start;
+        $this->timers['request'] = (int) ($requestTime*1000);
+        
         $this->profiling = false;
         $xhprof_data = xhprof_disable();
         if (is_array($xhprof_data)) {
-            foreach ($xhprof_data as $call => $callData) {
-                foreach ($this->parsers as $parser) {
-                    $parser->match($call, $callData);
-                }
-            }
+            $this->parser->parse($xhprof_data);
         }
-        foreach ($this->parsers as $parser) {
-            $name = $parser->getName();
-            $this->timers[$name] = $parser->getTime();
-            $this->counters[$name] = $parser->getCount();
+        foreach ($this->probes as $probe) {
+            $name = $probe->getName();
+            if ($probe->isTimingProbe()) {
+                $this->timers[$name] = $probe->getTime();
+            }
+            if ($probe->isCallsProbe()) {
+                $this->counters[$name] = $probe->getCount();
+            }
         }
         
         return true;

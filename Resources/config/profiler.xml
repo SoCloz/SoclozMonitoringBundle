@@ -8,7 +8,8 @@
         <parameter key="socloz_monitoring.profiler.listener.class">Socloz\MonitoringBundle\Listener\Profiler</parameter>
         <parameter key="socloz_monitoring.profiler.class">Socloz\MonitoringBundle\Profiler\Xhprof</parameter>
         <parameter key="socloz_monitoring.profiler.parser.class">Socloz\MonitoringBundle\Profiler\Parser</parameter>
-        <parameter key="socloz_monitoring.profiler.parser.definition.mongodb" type="collection">
+        <parameter key="socloz_monitoring.profiler.probe.class">Socloz\MonitoringBundle\Profiler\Probe</parameter>
+        <parameter key="socloz_monitoring.profiler.probe.definition.mongodb.calls" type="collection">
             <parameter key="type">callee</parameter>
             <parameter key="calls" type="collection">
                 <parameter>MongoCollection::batchInsert</parameter>
@@ -19,9 +20,19 @@
                 <parameter>MongoCollection::find</parameter>
                 <parameter>MongoCollection::findOne</parameter>
                 <parameter>MongoCollection::count</parameter>
+                <parameter>MongoCollection::count</parameter>
             </parameter>
         </parameter>
-        <parameter key="socloz_monitoring.profiler.parser.definition.sphinx" type="collection">
+        <parameter key="socloz_monitoring.profiler.probe.definition.mongodb.timing" type="collection">
+            <parameter key="type">callee_class</parameter>
+            <parameter key="calls" type="collection">
+                <parameter>MongoClient</parameter>
+                <parameter>MongoDB</parameter>
+                <parameter>MongoCollection</parameter>
+                <parameter>MongoCursor</parameter>
+            </parameter>
+        </parameter>
+        <parameter key="socloz_monitoring.profiler.probe.definition.sphinx.calls" type="collection">
             <parameter key="type">callee</parameter>
             <parameter key="calls" type="collection">
                 <parameter>SphinxClient::query</parameter>
@@ -31,27 +42,27 @@
                 <parameter>SphinxClient::buildKeywords</parameter>
             </parameter>
         </parameter>
-        <parameter key="socloz_monitoring.profiler.parser.definition.redis" type="collection">
+        <parameter key="socloz_monitoring.profiler.probe.definition.sphinx.timing" type="collection">
+            <parameter key="type">callee_class</parameter>
+            <parameter key="calls" type="collection">
+                <parameter>SphinxClient</parameter>
+            </parameter>
+        </parameter>
+        <parameter key="socloz_monitoring.profiler.probe.definition.redis" type="collection">
             <parameter key="type">callee_class</parameter>
             <parameter key="calls" type="collection">
                 <parameter>Redis</parameter>
                 <parameter>RedisArray</parameter>
             </parameter>
         </parameter>
-        <parameter key="socloz_monitoring.profiler.parser.definition.curl" type="collection">
+        <parameter key="socloz_monitoring.profiler.probe.definition.curl" type="collection">
             <parameter key="type">callee</parameter>
             <parameter key="calls" type="collection">
                 <parameter>curl_exec</parameter>
                 <parameter>curl_multiexec</parameter>
             </parameter>
         </parameter>
-        <parameter key="socloz_monitoring.profiler.parser.definition.request" type="collection">
-            <parameter key="type">call</parameter>
-            <parameter key="calls" type="collection">
-                <parameter>main()</parameter>
-            </parameter>
-        </parameter>
-        <parameter key="socloz_monitoring.profiler.parser.definition.calls" type="collection">
+        <parameter key="socloz_monitoring.profiler.probe.definition.calls" type="collection">
             <parameter key="type">callee</parameter>
             <parameter key="calls">%socloz_monitoring.profiler.calls%</parameter>
         </parameter>
@@ -59,19 +70,22 @@
 
     <services>
         <service id="socloz_monitoring.profiler" class="%socloz_monitoring.profiler.class%" >
+            <argument>%socloz_monitoring.profiler.parser.class%</argument>
             <argument />
-            <argument>%socloz_monitoring.profiler.memory%</argument>
+            <argument>%socloz_monitoring.profiler.parser.class%</argument>
         </service>
 
         <service id="socloz_monitoring.profiler.listener" class="%socloz_monitoring.profiler.listener.class%" >
             <tag name="kernel.event_listener" event="kernel.response" method="onCoreResponse" priority="-10000" />
             <tag name="kernel.event_listener" event="kernel.request" method="onCoreRequest" priority="10000" />
             <argument type="service" id="socloz_monitoring.profiler" />
-            <argument type="service" id="socloz_monitoring.statsd" />
+            <argument type="service" id="socloz_monitoring.statsd" on-invalid="ignore" />
+            <argument type="service" id="socloz_monitoring.logger" on-invalid="ignore" />
             <argument>%socloz_monitoring.profiler.sampling%</argument>
         </service>
 
-        <service id="socloz_monitoring.profiler.parser" class="%socloz_monitoring.profiler.parser.class%" >
+        <service id="socloz_monitoring.profiler.probe" class="%socloz_monitoring.profiler.probe.class%" >
+            <argument />
             <argument />
             <argument />
         </service>

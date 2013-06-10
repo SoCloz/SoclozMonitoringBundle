@@ -49,11 +49,15 @@ class Profiler
                 $timers = $this->profiler->getTimers();
                 $counters = $this->profiler->getCounters();
                 if ($this->statsd) {
+                    $sample = $this->sampling/100;
+                    $route = $event->getRequest()->attributes->get('_route');
                     foreach ($timers as $key => $value) {
-                        $this->statsd->timing($key, $value, $this->sampling/100);
+                        $this->statsd->timing($key, $value, $sample);
+                        $this->statsd->timing("per_route.$key.$route", $value, $sample);
                     }
                     foreach ($counters as $key => $value) {
-                        $this->statsd->updateStats($key, $value, $this->sampling/100);
+                        $this->statsd->updateStats($key, $value, $sample);
+                        $this->statsd->updateStats("per_route.$key.$route", $value, $sample);
                     }
                 }
             }

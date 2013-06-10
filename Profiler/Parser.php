@@ -16,72 +16,54 @@ class Parser {
     protected $time = 0;
     protected $count = 0;
 
-    public function __construct($name, $definition)
+    /**
+     * Initializes probes
+     * 
+     * @param array $probes
+     */
+    public function __construct($probes)
     {
-        $this->name = $name;
-        $this->type = isset($definition['type']) ? $definition['type'] : "call";
-        $calls = isset($definition['calls']) ? $definition['calls'] : array();
-        foreach ($calls as $call) {
-            $this->calls[$call] = true;
+        $this->calls = array();
+        foreach ($probes as $probe) {
+            $calls = $probe->getCalls();
+            $type = $probe->getType();
+            foreach ($calls as $call) {
+                @$this->calls[$type][$call][] = $probe;
+            }
         }
     }
 
     /**
      * Parses Xhprof data
      * 
-     * @param string $callerCallee
-     * @param array $callData 
+     * @param array $xhprof_data
      */
-    public function match($call, $callData) {
-        if ($this->type != "call") {
-            $callArr = explode("==>", $call);
-            if (count($callArr) != 2) {
+    public function parse($xhprof_data)
+    {
+        foreach ($xhprof_data as $call => $callData) {
+            $pos = strpos($call, "==>");
+            if (!$pos) {
                 return;
             }
-            $call = ($this->type == "caller" || $this->type == "caller_class" ? $callArr[0] : $callArr[1]);
-            if (($this->type == "caller_class" || $this->type == "callee_class") && $pos = strpos($call, "::")) {
-                $call = substr($call, 0, $pos);
+            $callee = substr($call, $pos+3);
+
+            if (isset($this->calls["callee"][$callee])) {
+                $this->addCallData($this->calls["callee"][$callee], $callData);
+            }
+            $pos = strpos($callee, '::');
+            if ($pos) {
+                $class = substr($callee, 0, $pos);
+                if (isset($this->calls["callee_class"][$class])) {
+                    $this->addCallData($this->calls["callee_class"][$class], $callData);
+                }
             }
         }
-        if (isset($this->calls[$call])) {
-            $this->addCallData($callData);
+    }
+    
+    public function addCallData($probes, $callData)
+    {
+        foreach ($probes as $probe) {
+            $probe->addCallData($callData);
         }
-    }
-    
-    /**
-     * Adds timing/count data
-     * 
-     * @param array $callData 
-     */
-    public function addCallData($callData) {
-        $this->time += (int) $callData['wt']/1000; // ms
-        $this->count += $callData['ct'];
-    }
-    
-    /**
-     * Get total wall time for current parser
-     * 
-     * @return int 
-     */
-    public function getTime() {
-        return $this->time;
-    }
-    
-    /**
-     * Get total number of calls for current parser
-     * 
-     * @return int 
-     */
-    public function getCount() {
-        return $this->count;
-    }
-    
-    /**
-     * Get the parser name
-     * 
-     * @return string 
-     */
-    public function getName() {
-        return $this->name;
-    }
+    } 
 }
