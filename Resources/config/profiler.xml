@@ -59,7 +59,7 @@
             <parameter key="type">callee</parameter>
             <parameter key="calls" type="collection">
                 <parameter>curl_exec</parameter>
-                <parameter>curl_multiexec</parameter>
+                <parameter>curl_multi_exec</parameter>
             </parameter>
         </parameter>
         <parameter key="socloz_monitoring.profiler.probe.definition.calls" type="collection">
