@@ -25,10 +25,11 @@ class Profiler
     protected $statsd;
     protected $sampling;
 
-    public function __construct($profiler, $statsd, $sampling)
+    public function __construct($profiler, $statsd, $logger, $sampling)
     {
         $this->profiler = $profiler;
         $this->statsd = $statsd;
+        $this->logger = $logger;
         $this->sampling = $sampling;
     }
 
@@ -59,6 +60,9 @@ class Profiler
                         $this->statsd->updateStats($key, $value, $sample);
                         $this->statsd->updateStats("per_route.$key.$route", $value, $sample);
                     }
+                }
+                if ($this->logger) {
+                    $this->logger->log($event->getRequest(), $timers, $counters);
                 }
             }
         }

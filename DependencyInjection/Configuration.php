@@ -50,6 +50,11 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('port')->end()
                         ->scalarNode('prefix')->defaultValue('socloz_monitoring')->end()
                     ->end()
+                ->end()
+                ->arrayNode('logger')
+                    ->children()
+                        ->booleanNode('enable')->defaultValue(false)->end()
+                    ->end()
                 ->end();
 
         return $treeBuilder;
