@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: jfb
- * Date: 12/06/13
- * Time: 11:21
- * To change this template use File | Settings | File Templates.
- */
 
 namespace Socloz\MonitoringBundle\Tests;
 

@@ -1,16 +1,11 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace Socloz\MonitoringBundle\Tests\Mocks;
 
 use Socloz\MonitoringBundle\Notify\StatsD;
 
 /**
- * Description of StatsDMock
+ * StatsD Mock
  *
  * @author jfb
  */
@@ -20,11 +15,13 @@ class StatsDMock extends StatsD
     protected $stats = array();
     protected $sent = array();
 
-    public function timing($stat, $time, $sampleRate=1) {
+    public function timing($stat, $time, $sampleRate=1)
+    {
         parent::timing("timing.$stat", floor($time/1000), $sampleRate);
     }
 
-    public function updateStats($stat, $delta, $sampleRate=1) {
+    public function updateStats($stats, $delta=1, $sampleRate=1)
+    {
         parent::updateStats("counter.$stat", $delta, $sampleRate);
     }
 

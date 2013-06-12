@@ -1,15 +1,11 @@
 <?php
 
-/*
- * Copyright CloseToMe 2011/2012
- */
-
 namespace Socloz\MonitoringBundle\Notify;
 
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Description of Dump
+ * Logs profiling data
  *
  * @author jfb
  */

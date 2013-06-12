@@ -32,7 +32,7 @@ class TestController extends Controller
     }
 
     /**
-     * Do a preg_match
+     * Calls a specific, profiled function
      */
     public function pregAction($count)
     {
@@ -43,6 +43,11 @@ class TestController extends Controller
         return new Response($res ? "foo and bar match ?!?" : "foo and bar do not match");
     }
 
+    /**
+     * Profiled function
+     *
+     * @return int
+     */
     protected function doSomething()
     {
         return preg_match("/foo/", "bar");
