@@ -15,23 +15,18 @@
 
     <testsuites>
         <testsuite name="Socloz Monitoring Bundle Test Suite">
-            <directory>..</directory>
+            <directory>Tests</directory>
         </testsuite>
     </testsuites>
-
-    <!--
-    <php>
-        <server name="KERNEL_DIR" value="/path/to/your/app/" />
-    </php>
-    -->
 
     <filter>
         <whitelist>
             <directory>.</directory>
             <exclude>
-                <directory>../Resources</directory>
-                <directory>../Kernel</directory>
-                <directory>../Mocks</directory>
+                <directory>Resources</directory>
+                <directory>Fixtures</directory>
+                <directory>Mocks</directory>
+                <directory>vendor</directory>
             </exclude>
         </whitelist>
     </filter>
