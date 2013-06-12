@@ -14,7 +14,8 @@ use Socloz\MonitoringBundle\Notify\StatsD;
  * @author Szymon Szewczyk <s.szewczyk@roxway.pl>
  * @author jfbus <jf@closetome.fr>
  */
-class Exceptions {
+class Exceptions
+{
 
     /**
      * @var Mailer 
@@ -27,7 +28,8 @@ class Exceptions {
      * @param Mailer $mailer 
      * @param StatsD $statsd 
      */
-    public function __construct($mailer, $statsd, $ignore) {
+    public function __construct($mailer, $statsd, $ignore)
+    {
         $this->mailer = $mailer;
         $this->statsd = $statsd;
         $this->ignore = is_array($ignore) ? $ignore : array($ignore);
@@ -39,7 +41,8 @@ class Exceptions {
      * @param GetResponseForExceptionEvent $event
      * @return void
      */
-    public function onKernelException(GetResponseForExceptionEvent $event) {
+    public function onKernelException(GetResponseForExceptionEvent $event)
+    {
         $class = get_class($event->getException());
         if (!in_array($class, $this->ignore)) {
             if ($this->mailer) {

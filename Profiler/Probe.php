@@ -7,7 +7,8 @@ namespace Socloz\MonitoringBundle\Profiler;
  *
  * @author jfbus
  */
-class Probe {
+class Probe
+{
     
     const TRACKER_TIMING = 1;
     const TRACKER_CALLS = 2;
@@ -43,7 +44,8 @@ class Probe {
      * 
      * @param array $callData 
      */
-    public function addCallData($callData) {
+    public function addCallData($callData)
+    {
         if ($this->isTimingProbe()) {
             $this->time += (int) $callData['wt']/1000; // ms
         }
@@ -57,7 +59,8 @@ class Probe {
      * 
      * @return int 
      */
-    public function getTime() {
+    public function getTime()
+    {
         return $this->time;
     }
     

@@ -9,7 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @author Szymon Szewczyk <s.szewczyk@roxway.pl>
  */
-class Mailer {
+class Mailer
+{
 
     /**
      * SwiftMailer
@@ -28,7 +29,8 @@ class Mailer {
      * @param string $to 
      * @param boolean $enabled
      */
-    public function __construct($mailer, $templating, $from, $to, $enabled) {
+    public function __construct($mailer, $templating, $from, $to, $enabled)
+    {
         $this->mailer = $mailer;
         $this->templating = $templating;
         $this->from = $from;
@@ -36,7 +38,8 @@ class Mailer {
         $this->enabled = $enabled;
     }
 
-    public function getMailer() {
+    public function getMailer()
+    {
         return $this->mailer;
     }
 
@@ -46,7 +49,8 @@ class Mailer {
      * @param Request $request
      * @param \Exception $exception 
      */
-    public function sendException(Request $request, \Exception $exception) {
+    public function sendException(Request $request, \Exception $exception)
+    {
         if (!$this->enabled) { return; }
         
         $message = \Swift_Message::newInstance()

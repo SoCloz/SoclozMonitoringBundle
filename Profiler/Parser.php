@@ -7,7 +7,8 @@ namespace Socloz\MonitoringBundle\Profiler;
  *
  * @author jfbus
  */
-class Parser {
+class Parser
+{
     
     protected $name;
     protected $type;
