@@ -22,4 +22,6 @@ socloz_monitoring:
     enable: true
     host: nowhere
     port: 42
+    merge_packets: true
+
 

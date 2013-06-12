@@ -7,43 +7,45 @@
 
 namespace Socloz\MonitoringBundle\Tests\Mocks;
 
+use Socloz\MonitoringBundle\Notify\StatsD;
+
 /**
  * Description of StatsDMock
  *
  * @author jfb
  */
-class StatsDMock {
+class StatsDMock extends StatsD
+{
 
     protected $stats = array();
-    
-    public function __construct($host, $port, $prefix) {
+    protected $sent = array();
+
+    public function timing($stat, $time, $sampleRate=1) {
+        parent::timing("timing.$stat", floor($time/1000), $sampleRate);
     }
 
-    public function sendException(Request $request, \Exception $exception) {
-        $this->exceptions[] = $exceptions;
+    public function updateStats($stat, $delta, $sampleRate=1) {
+        parent::updateStats("counter.$stat", $delta, $sampleRate);
     }
-    
-    public function getExceptions() {
-        return $this->exceptions;
-    }
-    
-    public function timing($stat, $time, $sampleRate=1) {
-        $this->stats["timing.$stat"] = $time;
-    }
-    
-    public function increment($stats, $sampleRate=1) {
-        $this->updateStats($stats);
-    }
-    
-    public function updateStats($stats, $delta=1, $sampleRate=1) {
-        if (!is_array($stats)) { $stats = array($stats); }
-        foreach ($stats as $stat) {
-            @$this->stats["counter.$stat"]+=$delta;
-        }
-    }
-    
-    public function getStats() {
+
+    public function getStats()
+    {
         return $this->stats;
     }
 
+    protected function queue($data, $sampleRate=1)
+    {
+        $this->stats = array_merge($this->stats, $data);
+        parent::queue($data, $sampleRate);
+    }
+
+    protected function send($data)
+    {
+        $this->sent[] = $data;
+    }
+
+    public function getSent()
+    {
+        return $this->sent;
+    }
 }

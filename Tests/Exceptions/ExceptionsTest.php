@@ -26,6 +26,6 @@ class RequestTest extends WebTestCase
         $this->assertEquals("Generated exception", $exceptions[0]->getMessage());
 
         $stats = $statsd->getStats();
-        $this->assertEquals(1, $stats['counter.exception']);
+        $this->assertEquals("1|c", $stats['counter.exception']);
     }
 }
