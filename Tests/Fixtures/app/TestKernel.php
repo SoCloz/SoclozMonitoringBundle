@@ -5,7 +5,7 @@ namespace Socloz\MonitoringBundle\Tests\Fixtures;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
-require_once __DIR__ . '/../../../../../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../vendor/autoload.php';
 
 class TestKernel extends Kernel
 {
