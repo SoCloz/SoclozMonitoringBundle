@@ -1,6 +1,7 @@
 framework:
   router:        { resource: "%kernel.root_dir%/config/routing.yml" }
   secret: mysecret
+  test: ~
 
 parameters:
   socloz_monitoring.mailer.class: Socloz\MonitoringBundle\Tests\Mocks\MailerMock
@@ -12,6 +13,7 @@ socloz_monitoring:
   profiler:
     enable: true
     request: true
+    calls: ["Socloz\MonitoringBundle\Tests\Fixtures\Controller\TestController::doSomething"]
   mailer:
     enable: true
     from: email@example.com
@@ -19,5 +21,5 @@ socloz_monitoring:
   statsd:
     enable: true
     host: nowhere
-    port: 4242
+    port: 42
 
