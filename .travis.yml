@@ -5,7 +5,7 @@ php:
   - 5.4
 
 before_script:
-  - pecl -q install xhprof && echo "extension=xhprof.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+  - pecl -q install xhprof-beta && echo "extension=xhprof.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar install --dev
 
