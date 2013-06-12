@@ -13,7 +13,9 @@
             <argument>%socloz_monitoring.statsd.host%</argument>
             <argument>%socloz_monitoring.statsd.port%</argument>
             <argument>%socloz_monitoring.statsd.prefix%</argument>
+            <argument>%socloz_monitoring.statsd.always_flush%</argument>
             <argument>%socloz_monitoring.statsd.merge_packets%</argument>
+            <argument>%socloz_monitoring.statsd.packet_size%</argument>
         </service>
     </services>
 </container>

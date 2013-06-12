@@ -49,7 +49,10 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('host')->end()
                         ->scalarNode('port')->end()
                         ->scalarNode('prefix')->defaultValue('socloz_monitoring')->end()
+                        ->booleanNode('always_flush')->defaultValue(false)->end()
                         ->booleanNode('merge_packets')->defaultValue(false)->end()
+                        // Assuming we are on a LAN
+                        ->scalarNode('packet_size')->defaultValue(1432)->end()
                     ->end()
                 ->end()
                 ->arrayNode('logger')

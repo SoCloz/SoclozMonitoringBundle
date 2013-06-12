@@ -15,17 +15,22 @@ class StatsD
     protected $host;
     protected $port;
     protected $prefix;
+    protected $alwaysFlush;
     protected $mergePackets;
+    protected $packetSize;
     protected $doNotTrack = false;
 
+    protected $queueSize = 0;
     protected $queue = array();
 
-    public function __construct($host, $port, $prefix, $mergePackets)
+    public function __construct($host, $port, $prefix, $alwaysFlush, $mergePackets, $packetSize)
     {
         $this->host = $host;
         $this->port = $port;
         $this->prefix = $prefix;
-        $this->singlePacket = $mergePackets;
+        $this->alwaysFlush = $alwaysFlush;
+        $this->mergePackets = $mergePackets;
+        $this->packetSize = $packetSize;
     }
     
     public function doNotTrack()
@@ -123,6 +128,12 @@ class StatsD
         $this->queue($data, $sampleRate);
     }
 
+    /**
+     * queues data
+     *
+     * @param array $data
+     * @param int $sampleRate
+     */
     protected function queue($data, $sampleRate=1)
     {
         if ($sampleRate < 1) {
@@ -131,14 +142,22 @@ class StatsD
             }
         }
         foreach ($data as $stat => $value) {
-            $this->queue[] = "$this->prefix.$stat:$value";
+            $msg = "$this->prefix.$stat:$value";
+            if ($this->queueSize + strlen($msg) > $this->packetSize) {
+                $this->flush();
+            }
+            $this->queue[] = $msg;
+            $this->queueSize += strlen($msg)+1;
+        }
+        if ($this->alwaysFlush) {
+            $this->flush();
         }
     }
 
     /*
-     * Squirt the metrics over UDP
+     * Flushes the queue
      **/
-    protected function flush()
+    public function flush()
     {
         if ($this->doNotTrack) {
             return;
@@ -154,10 +173,11 @@ class StatsD
             }
         }
         $this->queue = array();
+        $this->queueSize = 0;
     }
 
     /*
-     * Squirt the metrics over UDP
+     * Sends metrics over UDP
      **/
     protected function send($data)
     {
