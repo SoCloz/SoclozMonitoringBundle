@@ -20,6 +20,9 @@ Profiling :
 What's new ?
 ------------
 
+Updated 2013/06/12 :
+* statsd data can now be sent in a single UDP packet (if you are using statds 0.4)
+
 Updated 2013/06/10 :
 * new logger module,
 * xhprof parser is much faster,
@@ -81,6 +84,8 @@ Setup
 * Configure the module : `socloz_monitoring.mailer.from` (source email of the exception alert mails), `socloz_monitoring.mailer.to` (destination email of the exception alert mails),
 `socloz_monitoring.statsd.host` (IP address/hostname of the statsd server), `socloz_monitoring.statsd.port` (port ot the statsd server), `socloz_monitoring.statsd.prefix` (prefix of the statsd keys)
 
+* If you use statsd version 0.4 or later, set `socloz_monitoring.statsd.merge_packets` to `true`
+
 * Decide what you want to profile : `socloz_monitoring.profiling.request` (HTTP requests), `socloz_monitoring.profiling.mongodb` (MongoDB calls)
     
 The statsd data is (on unmodified configs - type = mongodb or request) : 
@@ -110,6 +115,7 @@ The default configuration is :
             host:
             port:
             prefix: socloz_monitoring
+            merge_packets: false
         logger:
             enable: false
 

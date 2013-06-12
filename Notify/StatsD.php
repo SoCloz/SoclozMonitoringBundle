@@ -9,21 +9,33 @@ namespace Socloz\MonitoringBundle\Notify;
  *
  * @author etsy, jfb
  */
-class StatsD {
+class StatsD
+{
 
     protected $host;
     protected $port;
     protected $prefix;
+    protected $mergePackets;
     protected $doNotTrack = false;
 
-    public function __construct($host, $port, $prefix) {
+    protected $queue = array();
+
+    public function __construct($host, $port, $prefix, $mergePackets)
+    {
         $this->host = $host;
         $this->port = $port;
         $this->prefix = $prefix;
+        $this->singlePacket = $mergePackets;
     }
     
-    public function doNotTrack() {
+    public function doNotTrack()
+    {
         $this->doNotTrack = true;
+    }
+
+    public function __destruct()
+    {
+        $this->flush();
     }
     
     /**
@@ -33,8 +45,39 @@ class StatsD {
      * @param float $time The ellapsed time (ms) to log
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      **/
-    public function timing($stat, $time, $sampleRate=1) {
-        $this->send(array($stat => "$time|ms"), $sampleRate);
+    public function timing($stat, $time, $sampleRate=1)
+    {
+        $this->queue(array($stat => "$time|ms"), $sampleRate);
+    }
+
+    /**
+     * Sets one or more gauges to a value
+     *
+     * @param string|array $stats The metric(s) to set.
+     * @param float $value The value for the stats.
+     **/
+    public function gauge($stats, $value)
+    {
+        $this->updateStats($stats, $value, 1, 'g');
+    }
+
+    /**
+     * A "Set" is a count of unique events.
+     * This data type acts like a counter, but supports counting
+     * of unique occurences of values between flushes. The backend
+     * receives the number of unique events that happened since
+     * the last flush.
+     *
+     * The reference use case involved tracking the number of active
+     * and logged in users by sending the current userId of a user
+     * with each request with a key of "uniques" (or similar).
+     *
+     * @param string|array $stats The metric(s) to set.
+     * @param float $value The value for the stats.
+     **/
+    public function set($stats, $value)
+    {
+        $this->updateStats($stats, $value, 1, 's');
     }
 
     /**
@@ -44,7 +87,8 @@ class StatsD {
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      * @return boolean
      **/
-    public function increment($stats, $sampleRate=1) {
+    public function increment($stats, $sampleRate=1)
+    {
         $this->updateStats($stats, 1, $sampleRate);
     }
 
@@ -55,7 +99,8 @@ class StatsD {
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      * @return boolean
      **/
-    public function decrement($stats, $sampleRate=1) {
+    public function decrement($stats, $sampleRate=1)
+    {
         $this->updateStats($stats, -1, $sampleRate);
     }
 
@@ -67,48 +112,66 @@ class StatsD {
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      * @return boolean
      **/
-    public function updateStats($stats, $delta=1, $sampleRate=1) {
+    public function updateStats($stats, $delta=1, $sampleRate=1)
+    {
         if (!is_array($stats)) { $stats = array($stats); }
         $data = array();
         foreach($stats as $stat) {
             $data[$stat] = "$delta|c";
         }
 
-        $this->send($data, $sampleRate);
+        $this->queue($data, $sampleRate);
+    }
+
+    protected function queue($data, $sampleRate=1)
+    {
+        if ($sampleRate < 1) {
+            foreach ($data as $stat => $value) {
+                $data[$stat] = "$value|@$sampleRate";
+            }
+        }
+        foreach ($data as $stat => $value) {
+            $this->queue[] = "$this->prefix.$stat:$value";
+        }
     }
 
     /*
      * Squirt the metrics over UDP
      **/
-    public function send($data, $sampleRate=1) {
+    protected function flush()
+    {
         if ($this->doNotTrack) {
             return;
         }
-        // sampling
-        $sampledData = array();
 
-        if ($sampleRate < 1) {
-            foreach ($data as $stat => $value) {
-                if ((mt_rand() / mt_getrandmax()) <= $sampleRate) {
-                    $sampledData[$stat] = "$value|@$sampleRate";
-                }
-            }
+        if (empty($this->queue)) { return; }
+
+        if ($this->mergePackets) {
+            $this->send(join("\n", $this->queue));
         } else {
-            $sampledData = $data;
+            foreach ($this->queue as $data) {
+                $this->send($data);
+            }
         }
+        $this->queue = array();
+    }
 
-        if (empty($sampledData)) { return; }
+    /*
+     * Squirt the metrics over UDP
+     **/
+    protected function send($data)
+    {
+        if ($this->doNotTrack) {
+            return;
+        }
 
         // Wrap this in a try/catch - failures in any of this should be silently ignored
         try {
             $fp = fsockopen("udp://$this->host", $this->port, $errno, $errstr);
             if (! $fp) { return; }
-            foreach ($sampledData as $stat => $value) {
-                fwrite($fp, "$this->prefix.$stat:$value");
-            }
+            fwrite($fp, $data);
             fclose($fp);
         } catch (\Exception $e) {
         }
     }
-
 }
