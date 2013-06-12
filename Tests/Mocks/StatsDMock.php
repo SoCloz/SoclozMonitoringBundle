@@ -20,7 +20,7 @@ class StatsDMock extends StatsD
         parent::timing("timing.$stat", floor($time/1000), $sampleRate);
     }
 
-    public function updateStats($stats, $delta=1, $sampleRate=1)
+    public function updateStats($stat, $delta=1, $sampleRate=1)
     {
         parent::updateStats("counter.$stat", $delta, $sampleRate);
     }
