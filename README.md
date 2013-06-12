@@ -161,7 +161,7 @@ The statsd data is (on unmodified configs) :
 * `stats.timers.prefix.{mongodb,request, ...}.{lower,mean_90,upper,upper_90}` - timing information
 * `stats.prefix.{mongodb,request, ...} / stats_counts.prefix.{mongodb,request, ...}` - counters
 * `stats.timers.prefix.per_route.{mongodb,request, ...}.{route}.{lower,mean_90,upper,upper_90}` - per route timing information
-* `stats.prefix.per_route.{mongodb,request, ...}.{route} - per route counters
+* `stats.prefix.per_route.{mongodb,request, ...}.{route}` - per route counters
 
 Hints
 -----
