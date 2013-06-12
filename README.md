@@ -1,6 +1,8 @@
 SoclozMonitoringBundle
 ======================
 
+[![Build Status](https://secure.travis-ci.org/SoCloz/SoclozMonitoringBundle.png?branch=master)](http://travis-ci.org/SoCloz/SoclozMonitoringBundle)
+
 A monitoring Symfony2 bundle for production servers that :
 
 * sends emails on unhandled exceptions,
