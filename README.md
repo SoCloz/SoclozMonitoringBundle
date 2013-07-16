@@ -7,7 +7,8 @@ A monitoring Symfony2 bundle for production servers that :
 
 * sends emails on unhandled exceptions,
 * profiles PHP code and sends profiling information to statsd,
-* *(new)* logs request profiling information.
+* logs request profiling information,
+* *new* adds Request IDs/pid to log files/HTTP headers to troubleshoot bugs.
 
 Dependencies
 ------------
@@ -21,6 +22,9 @@ Profiling :
 
 What's new ?
 ------------
+
+Updated 2013/07/16 :
+* add request_id service
 
 Updated 2013/06/12 :
 * statsd data can now be sent in a single UDP packet (if you are using statsd 0.4)
@@ -53,7 +57,27 @@ Thanks to graphite, you can get some nice graphs : [TODO]
 
 You also get the following log messages :
 
-    [2013-06-10 10:38:31] app.INFO: /page/page_slug : 2041 ms mongodb : 6 calls/108 ms redis : 9 calls/2 ms [] []
+    [2013-06-10 10:38:31] app.INFO: /page/page_slug : 2041 ms mongodb : 6 calls/108 ms redis : 9 calls/2 ms [] {"request_id":"785317517bccd92b4da08d88b4c09fe5","pid":5503}
+
+Debugging using Request IDs
+---------------------------
+
+For each HTTP request (or script), a Request ID is computed. It enabled you to correlate logs from various services (webservices, database requests, ...).
+
+This Request ID is forwarded to external webservices called using Guzzle using the X-RequestID HTTP header.
+
+The Request ID is automatically :
+
+* added to the HTTP response as a X-RequestID header,
+* added to all log lines (as long as the pid),
+* added to all Guzzle outgoing requests as a X-RequestID header.
+
+If a X-RequestID HTTP header is found, its value will be used for the Request ID. If you call a SoclozMonitoringBundle powered webservice using Guzzle, the logs for the webservice will use the same request_id as the master request.
+
+You should forward the Request ID to all the external services used. For example, you can add the Request ID to all your database queries as a SQL comment :
+
+    $requestId = $this->get("socloz_monitoring.request_id")->getRequestId();
+    $sql = "SELECT /* {"request_id":"$requestId"} */ * FROM my_table WHERE col = ?";
 
 FAQ
 ---
@@ -118,6 +142,9 @@ The default configuration is :
             always_flush: false
             merge_packets: false
             packet_size: 1432
+        request_id:
+            enable: true
+            add_pid: true
         logger:
             enable: false
 

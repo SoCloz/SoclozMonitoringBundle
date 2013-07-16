@@ -44,6 +44,16 @@ class TestController extends Controller
     }
 
     /**
+     * Echoes the request ID
+     */
+    public function requestIdAction()
+    {
+        $requestId = $this->get("socloz_monitoring.request_id");
+        return new Response($requestId->getRequestId());
+    }
+
+
+    /**
      * Profiled function
      *
      * @return int

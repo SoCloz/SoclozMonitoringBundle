@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="socloz_monitoring.request_id.class">Socloz\MonitoringBundle\RequestId\RequestId</parameter>
+        <parameter key="socloz_monitoring.request_id.generator.class">Socloz\MonitoringBundle\RequestId\Generator</parameter>
+        <parameter key="socloz_monitoring.request_id.listener.class">Socloz\MonitoringBundle\Listener\RequestId</parameter>
+        <parameter key="socloz_monitoring.request_id.monolog.processor.class">Socloz\MonitoringBundle\RequestId\Monolog\Processor</parameter>
+        <parameter key="socloz_monitoring.request_id.adapter.guzzle.class">Socloz\MonitoringBundle\RequestId\Adapters\Guzzle</parameter>
+    </parameters>
+
+    <services>
+        <service id="socloz_monitoring.request_id.generator" class="%socloz_monitoring.request_id.generator.class%">
+        </service>
+        <service id="socloz_monitoring.request_id" class="%socloz_monitoring.request_id.class%">
+            <argument type="service" id="socloz_monitoring.request_id.generator" />
+            <argument>%socloz_monitoring.request_id.add_pid%</argument>
+        </service>
+        <service id="socloz_monitoring.request_id.listener" class="%socloz_monitoring.request_id.listener.class%">
+            <argument type="service" id="socloz_monitoring.request_id" />
+            <argument type="service" id="logger" on-invalid="null" />
+            <tag name="kernel.event_listener" event="kernel.response" method="onCoreResponse" />
+            <tag name="kernel.event_listener" event="kernel.request" method="onCoreRequest" priority="9999" />
+        </service>
+        <service id="socloz_monitoring.request_id.monolog.processor" class="%socloz_monitoring.request_id.monolog.processor.class%">
+            <argument type="service" id="socloz_monitoring.request_id" />
+            <argument>%socloz_monitoring.request_id.add_pid%</argument>
+            <tag name="monolog.processor" />
+        </service>
+
+        <!-- adapters -->
+        <service id="socloz_monitoring.request_id.adapter.guzzle" class="%socloz_monitoring.request_id.adapter.guzzle.class%">
+            <argument type="service" id="socloz_monitoring.request_id" />
+        </service>
+
+    </services>
+</container>

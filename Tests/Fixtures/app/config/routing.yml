@@ -6,7 +6,10 @@ test_controller_timing:
   pattern: /socloz_monitoring/timing/{time}
   defaults: { _controller: SoclozMonitoringTestBundle:Test:timing }
 
-
 test_controller_preg:
   pattern: /socloz_monitoring/preg/{count}
   defaults: { _controller: SoclozMonitoringTestBundle:Test:preg }
+
+test_controller_request_id:
+  pattern: /socloz_monitoring/request_id
+  defaults: { _controller: SoclozMonitoringTestBundle:Test:requestId }

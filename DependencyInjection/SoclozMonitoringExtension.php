@@ -28,7 +28,7 @@ class SoclozMonitoringExtension extends Extension
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        foreach (array("mailer", "statsd", "exceptions", "profiler", "logger") as $module) {
+        foreach (array("mailer", "statsd", "exceptions", "profiler", "logger", "request_id") as $module) {
             if (isset($config[$module]['enable']) && $config[$module]['enable']) {
                 $loader->load("$module.xml");
             }
