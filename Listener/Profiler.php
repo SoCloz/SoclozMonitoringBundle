@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Copyright CloseToMe SAS 2013
+ * Created by Jean-François Bustarret
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Socloz\MonitoringBundle\Listener;
 
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -12,12 +20,8 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 /**
- * RequestListener.
- *
- * The handle method must be connected to the core.request event.
- *
- * @author Jonas Wouters <hello@jonaswouters.be>
- * @author jfbus <jf@closetome.fr>
+ * The profiler
+ * Starts profiling on CoreRequest, stops on CoreResponse
  */
 class Profiler
 {

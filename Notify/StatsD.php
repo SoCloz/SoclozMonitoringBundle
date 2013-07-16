@@ -7,7 +7,7 @@ namespace Socloz\MonitoringBundle\Notify;
  * 
  * inspired by https://github.com/etsy/statsd/blob/master/examples/php-example.php
  *
- * @author etsy, jfb
+ * @author etsy, Jean-François Bustarret
  */
 class StatsD
 {
