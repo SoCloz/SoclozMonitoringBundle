@@ -1,7 +1,7 @@
 {
     "name": "socloz/monitoring-bundle",
     "description": "A profiling/monitoring Symfony2 bundle for production servers - alerts on exceptions, logs profiling data & sends data to statsd/graphite",
-    "homepage": "",
+    "homepage": "https://github.com/SoCloz/SoclozMonitoringBundle",
     "keywords": [ "monitoring", "profiling", "alerting", "production", "exceptions", "email", "xhprof", "statsd", "graphite" ],
     "license": "MIT",
     "authors": [
