@@ -50,28 +50,29 @@ class Profiler
     public function onCoreResponse(FilterResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            if ($this->profiler->stopProfiling()) {
-                $timers = $this->profiler->getTimers();
-                $counters = $this->profiler->getCounters();
-                if ($this->statsd) {
-                    $sample = $this->sampling/100;
-                    $route = $event->getRequest()->attributes->get('_route');
-                    foreach ($timers as $key => $value) {
-                        $this->statsd->timing($key, $value, $sample);
-                        if ($route) {
-                            $this->statsd->timing("per_route.$key.$route", $value, $sample);
-                        }
-                    }
-                    foreach ($counters as $key => $value) {
-                        $this->statsd->updateStats($key, $value, $sample);
-                        if ($route) {
-                            $this->statsd->updateStats("per_route.$key.$route", $value, $sample);
-                        }
+            $this->profiler->stopProfiling();
+            $timers = $this->profiler->getTimers();
+            $counters = $this->profiler->getCounters();
+
+            if ($this->statsd) {
+                $sample = $this->sampling/100;
+                $route = $event->getRequest()->attributes->get('_route');
+                foreach ($timers as $key => $value) {
+                    $this->statsd->timing($key, $value, $sample);
+                    if ($route) {
+                        $this->statsd->timing("per_route.$key.$route", $value, $sample);
                     }
                 }
-                if ($this->logger) {
-                    $this->logger->log($event->getRequest(), $timers, $counters);
+                foreach ($counters as $key => $value) {
+                    $this->statsd->updateStats($key, $value, $sample);
+                    if ($route) {
+                        $this->statsd->updateStats("per_route.$key.$route", $value, $sample);
+                    }
                 }
+            }
+
+            if ($this->logger) {
+                $this->logger->log($event->getRequest(), $timers, $counters);
             }
         }
     }
