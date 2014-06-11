@@ -59,28 +59,25 @@ class Xhprof {
      */
     public function stopProfiling()
     {
-        if (!$this->profiling) {
-            return false;
-        }
         $requestTime = microtime(true) - $this->start;
         $this->timers['request'] = (int) ($requestTime*1000);
         
-        $this->profiling = false;
-        $xhprof_data = xhprof_disable();
-        if (is_array($xhprof_data)) {
-            $this->parser->parse($xhprof_data);
-        }
-        foreach ($this->probes as $probe) {
-            $name = $probe->getName();
-            if ($probe->isTimingProbe()) {
-                $this->timers[$name] = $probe->getTime();
+        if ($this->profiling) {
+            $this->profiling = false;
+            $xhprof_data = xhprof_disable();
+            if (is_array($xhprof_data)) {
+                $this->parser->parse($xhprof_data);
             }
-            if ($probe->isCallsProbe()) {
-                $this->counters[$name] = $probe->getCount();
+            foreach ($this->probes as $probe) {
+                $name = $probe->getName();
+                if ($probe->isTimingProbe()) {
+                    $this->timers[$name] = $probe->getTime();
+                }
+                if ($probe->isCallsProbe()) {
+                    $this->counters[$name] = $probe->getCount();
+                }
             }
         }
-        
-        return true;
     }
 
     /**
