@@ -43,7 +43,7 @@ class Xhprof {
             $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
         }
 
-        if (function_exists('xhprof_enable') && len($this->probes) > 0) {
+        if (function_exists('xhprof_enable') && count($this->probes) > 0) {
             $this->profiling = true;
             xhprof_enable($this->memory ? XHPROF_FLAGS_MEMORY : null);
         }
