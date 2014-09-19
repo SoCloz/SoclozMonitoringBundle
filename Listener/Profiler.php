@@ -29,6 +29,9 @@ class Profiler
     protected $statsd;
     protected $sampling;
 
+    protected $start;
+    protected $profiling;
+
     public function __construct($profiler, $statsd, $logger, $sampling)
     {
         $this->profiler = $profiler;
@@ -44,15 +47,21 @@ class Profiler
                 return;
             }
             $this->profiler->startProfiling();
+            $this->start = microtime(true);
+            $this->profiling = true;
         }
     }
 
     public function onCoreResponse(FilterResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
-            if ($this->profiler->stopProfiling()) {
+            $this->profiler->stopProfiling();
+            if ($this->profiling) {
                 $timers = $this->profiler->getTimers();
+                $requestTime = microtime(true) - $this->start;
+                $timers['request'] = (int) ($requestTime*1000);
                 $counters = $this->profiler->getCounters();
+                $counters['request'] = 1;
                 if ($this->statsd) {
                     $sample = $this->sampling/100;
                     $route = $event->getRequest()->attributes->get('_route');

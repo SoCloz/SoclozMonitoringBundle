@@ -27,13 +27,10 @@ class Xhprof {
     protected $timers = array();
     protected $counters = array();
     
-    protected $start;
-    
     public function __construct($parserClass, $probes, $memory) {
         $this->parser = new $parserClass($probes);
         $this->probes = $probes;
         $this->memory = $memory;
-        $this->counters['request'] = 1;
     }
     
     /**
@@ -46,11 +43,10 @@ class Xhprof {
             $_SERVER['REQUEST_URI'] = $_SERVER['SCRIPT_NAME'];
         }
 
-        if (function_exists('xhprof_enable')) {            
+        if (function_exists('xhprof_enable') && len($this->probes) > 0) {
             $this->profiling = true;
             xhprof_enable($this->memory ? XHPROF_FLAGS_MEMORY : null);
         }
-        $this->start = microtime(true);
     }
 
     /**
@@ -62,9 +58,6 @@ class Xhprof {
         if (!$this->profiling) {
             return false;
         }
-        $requestTime = microtime(true) - $this->start;
-        $this->timers['request'] = (int) ($requestTime*1000);
-        
         $this->profiling = false;
         $xhprof_data = xhprof_disable();
         if (is_array($xhprof_data)) {

@@ -17,11 +17,14 @@ Exceptions catching : none.
 
 Profiling : 
 
-* [xhprof](http://pecl.php.net/package/xhprof)
+* *(optional)* [xhprof](http://pecl.php.net/package/xhprof)
 * *(optional)* [StatsD](https://github.com/etsy/statsd) (+ any graphing backend, e.g. [Graphite](http://graphite.wikidot.com))
 
 What's new ?
 ------------
+
+Updated 2014/09/18 :
+* profiler does not require anymore xhprof. request data is now profiled without xhprof
 
 Updated 2013/07/16 :
 * add request_id service
@@ -40,10 +43,10 @@ Profiled data
 --------------
 
 * *request* : number of HTTP requests (handled by Symfony) / duration of requests
-* *mongodb* : number of mongodb calls (insert/batchInsert/update/save/remove/count/find/findOne) / total duration
-* *redis* : number of redis calls / total duration (only phpredis calls are tracked - http://github.com/nicolasff/phpredis)
-* *sphinx* : number of sphinx calls (query/runQueries/updateAttributes/buildExcerpts/buildKeywords) / total duration
-* *curl* : number or curl calls (curl_exec/curl_multi_exec) / total duration
+* *mongodb* : number of mongodb calls (insert/batchInsert/update/save/remove/count/find/findOne) / total duration (requires xhprof)
+* *redis* : number of redis calls / total duration (only phpredis calls are tracked - http://github.com/nicolasff/phpredis) (requires xhprof)
+* *sphinx* : number of sphinx calls (query/runQueries/updateAttributes/buildExcerpts/buildKeywords) / total duration (requires xhprof)
+* *curl* : number or curl calls (curl_exec/curl_multi_exec) / total duration (requires xhprof)
 
 For each piece of data, you get :
 
@@ -86,20 +89,24 @@ FAQ
 
     If you are not convinced that profiling on production servers is helpful, this module is not for you.
 
-2. *What is the overhead ?*
+2. *What can I do to limit the overhead ?*
 
     On large sites, the recommended setup is :
 
-* activate xhprof only on a couple servers. The module will disable profiling if xhprof is absent.
+* activate xhprof only on a couple servers (or on none if the overhead is really too important). The module will disable profiling if xhprof is absent.
 * enable sampling. By default, all requests are profiled; you can lower the number of requests profiled by setting socloz_monitoring.profiler.sampling` (a value 50 will profile 50% of requests).
 
 3. *Can it profile database calls ? memcached calls ?*
 
     Yes (as long as the calls can be identified in xprof data). Contributions are welcomed for new parsers (mysql, pgsql, ...). See `Resources/config/profiler.xml` for examples.
 
-4. *Are yo hiring ?*
+4. *I don't like receiving emails on errors. Can I use rollbar/airbrake/sentry instead ?*
 
-    Yes. If you are looking for a job in Paris, France, send a mail to techjobs AT closetome DOT fr
+    Yes. Monolog already has a decent support for those tools. Please refer to the monolog doc.
+
+5. *Are yo hiring ?*
+
+    Yes. If you are looking for a job in Paris, France, send a mail to techjobs AT socloz DOT com
 
 Setup
 -----
