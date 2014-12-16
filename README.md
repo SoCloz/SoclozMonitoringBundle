@@ -20,25 +20,6 @@ Profiling :
 * *(optional)* [xhprof](http://pecl.php.net/package/xhprof)
 * *(optional)* [StatsD](https://github.com/etsy/statsd) (+ any graphing backend, e.g. [Graphite](http://graphite.wikidot.com))
 
-What's new ?
-------------
-
-Updated 2014/09/18 :
-* profiler does not require anymore xhprof. request data is now profiled without xhprof
-
-Updated 2013/07/16 :
-* add request_id service
-
-Updated 2013/06/12 :
-* statsd data can now be sent in a single UDP packet (if you are using statsd 0.4)
-* better tests
-
-Updated 2013/06/10 :
-* new logger module,
-* xhprof parser is much faster,
-* more precise mongodb timing measurement,
-* per route timings/calls tracking.
-
 Profiled data
 --------------
 
@@ -98,7 +79,7 @@ FAQ
     On large sites, the recommended setup is :
 
 * activate xhprof only on a couple servers (or on none if the overhead is really too important). The module will disable profiling if xhprof is absent.
-* enable sampling. By default, all requests are profiled; you can lower the number of requests profiled by setting socloz_monitoring.profiler.sampling` (a value 50 will profile 50% of requests).
+* enable sampling. By default, all requests are profiled; you can lower the number of requests profiled by setting `socloz_monitoring.profiler.sampling` (a value 50 will profile 50% of requests).
 
 3. *Can it profile database calls ? memcached calls ?*
 
@@ -106,7 +87,7 @@ FAQ
 
 4. *I don't like receiving emails on errors. Can I use rollbar/airbrake/sentry instead ?*
 
-    Yes. Monolog already has a decent support for those tools. Please refer to the monolog doc.
+    Yes. Monolog already has a decent support for those tools. Please refer to the [monolog doc](https://github.com/Seldaek/monolog#log-specific-servers-and-networked-logging).
 
 5. *Are yo hiring ?*
 
@@ -217,7 +198,7 @@ Hints
 
 Graphite hints
 
-* *number of mongo calls per request* : `divideSeries(stats_counts.socloz_monitoring.mongodb, stats_counts.socloz_monitoring.request)`
+* *number of mongodb calls per request* : `divideSeries(stats_counts.socloz_monitoring.mongodb, stats_counts.socloz_monitoring.request)`
 
 Roadmap
 -------
