@@ -60,7 +60,9 @@ Thanks to graphite, you can get some nice graphs : [TODO]
 
 You also get the following log messages :
 
-    [2013-06-10 10:38:31] app.INFO: /page/page_slug : 2041 ms mongodb : 6 calls/108 ms redis : 9 calls/2 ms [] {"request_id":"785317517bccd92b4da08d88b4c09fe5","pid":5503}
+```
+[2013-06-10 10:38:31] app.INFO: /page/page_slug : 2041 ms mongodb : 6 calls/108 ms redis : 9 calls/2 ms [] {"request_id":"785317517bccd92b4da08d88b4c09fe5","pid":5503}
+```
 
 Debugging using Request IDs
 ---------------------------
@@ -79,8 +81,10 @@ If a X-RequestID HTTP header is found, its value will be used for the Request ID
 
 You should forward the Request ID to all the external services used. For example, you can add the Request ID to all your database queries as a SQL comment :
 
-    $requestId = $this->get("socloz_monitoring.request_id")->getRequestId();
-    $sql = "SELECT /* {"request_id":"$requestId"} */ * FROM my_table WHERE col = ?";
+```php
+$requestId = $this->get("socloz_monitoring.request_id")->getRequestId();
+$sql = "SELECT /* {"request_id":"$requestId"} */ * FROM my_table WHERE col = ?";
+```
 
 FAQ
 ---
@@ -126,34 +130,36 @@ If you are using statsd version 0.4 or later :
 
 The default configuration is :
 
-    socloz_monitoring:
-        exceptions:
-            enable: true
-            ignore: ['Symfony\Component\HttpKernel\Exception\NotFoundHttpException','Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException']
-        profiler:
-            enable: true
-            sampling: 100
-            mongodb: false
-            request: false
-            redis: false
-            sphinx: false
-        mailer:
-            enable: true
-            from: 
-            to: 
-        statsd:
-            enable: false
-            host:
-            port:
-            prefix: socloz_monitoring
-            always_flush: false
-            merge_packets: false
-            packet_size: 1432
-        request_id:
-            enable: true
-            add_pid: true
-        logger:
-            enable: false
+```yaml
+socloz_monitoring:
+    exceptions:
+        enable: true
+        ignore: ['Symfony\Component\HttpKernel\Exception\NotFoundHttpException','Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException']
+    profiler:
+        enable: true
+        sampling: 100
+        mongodb: false
+        request: false
+        redis: false
+        sphinx: false
+    mailer:
+        enable: true
+        from: 
+        to: 
+    statsd:
+        enable: false
+        host:
+        port:
+        prefix: socloz_monitoring
+        always_flush: false
+        merge_packets: false
+        packet_size: 1432
+    request_id:
+        enable: true
+        add_pid: true
+    logger:
+        enable: false
+```        
 
 Graphing application data
 -------------------------
@@ -162,31 +168,40 @@ It is possible to send some application data to statsd :
 
 Counters :
 
-    $container->get('socloz_monitoring.statsd')->updateStats("counter_name", $number);
+```php
+$container->get('socloz_monitoring.statsd')->updateStats("counter_name", $number);
+```
 
 Gauges :
 
-    $container->get('socloz_monitoring.statsd')->gauge("gauge_name", $number);
+```php
+$container->get('socloz_monitoring.statsd')->gauge("gauge_name", $number);
+```
 
 Timers :
 
-    $start = microtime(true);
-    // do some stuff
-    $end = microtime(true);
-    $container->get('socloz_monitoring.statsd')->timing("timer_name", ($end-$start)*1000);
+```php
+$start = microtime(true);
+// do some stuff
+$end = microtime(true);
+$container->get('socloz_monitoring.statsd')->timing("timer_name", ($end-$start)*1000);
+```
 
 Just make sure you don't have any name collisions between your counters/timers and the standard ones.
 
 Stats are buffered and sent at the end of the script/request. In long running scripts, you should flush statsd regularly :
 
-    $container->get('socloz_monitoring.statsd')->flush();
+```php
+$container->get('socloz_monitoring.statsd')->flush();
+```
 
 You can also configure statsd to always send data immediately :
 
-    socloz_monitoring:
-        statsd:
-            always_flush: true
-
+```yaml
+socloz_monitoring:
+    statsd:
+        always_flush: true
+```
 Finding data in graphite
 ------------------------
 
