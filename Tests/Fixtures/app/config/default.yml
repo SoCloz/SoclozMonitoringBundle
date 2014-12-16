@@ -6,7 +6,7 @@ framework:
 parameters:
   socloz_monitoring.mailer.class: Socloz\MonitoringBundle\Tests\Mocks\MailerMock
   socloz_monitoring.statsd.class: Socloz\MonitoringBundle\Tests\Mocks\StatsDMock
-  
+
 socloz_monitoring:
   exceptions:
     enable: true
@@ -23,5 +23,3 @@ socloz_monitoring:
     host: nowhere
     port: 42
     merge_packets: true
-
-

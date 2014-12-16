@@ -11,16 +11,15 @@ use Socloz\MonitoringBundle\Notify\StatsD;
  */
 class StatsDMock extends StatsD
 {
-
     protected $stats = array();
     protected $sent = array();
 
-    public function timing($stat, $time, $sampleRate=1)
+    public function timing($stat, $time, $sampleRate = 1)
     {
         parent::timing("timing.$stat", floor($time/1000), $sampleRate);
     }
 
-    public function updateStats($stat, $delta=1, $sampleRate=1)
+    public function updateStats($stat, $delta = 1, $sampleRate = 1)
     {
         parent::updateStats("counter.$stat", $delta, $sampleRate);
     }
@@ -30,7 +29,7 @@ class StatsDMock extends StatsD
         return $this->stats;
     }
 
-    protected function queue($data, $sampleRate=1)
+    protected function queue($data, $sampleRate = 1)
     {
         $this->stats = array_merge($this->stats, $data);
         parent::queue($data, $sampleRate);

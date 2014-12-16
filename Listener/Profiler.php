@@ -12,9 +12,6 @@ namespace Socloz\MonitoringBundle\Listener;
 
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -25,7 +22,6 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  */
 class Profiler
 {
-
     protected $profiler;
 
     protected $statsd;

@@ -39,12 +39,10 @@ class StatsDTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($sent), "should have sent something");
         $msgLen = strlen($sent[0]);
         $maxCount = ceil(self::PACKET_SIZE/$msgLen+1)+1;
-        for ($i=0; $i<$maxCount; $i++) {
+        for ($i = 0; $i<$maxCount; $i++) {
             $statsd->updateStats('counter', 1);
         }
         $sent = $statsd->getSent();
         $this->assertEquals(2, count($sent), "packet size overflow => should send a packet");
-
     }
-
 }

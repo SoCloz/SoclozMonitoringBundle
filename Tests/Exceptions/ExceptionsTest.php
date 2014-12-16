@@ -4,7 +4,7 @@ namespace Socloz\MonitoringBundle\Tests\Exceptions;
 
 use Socloz\MonitoringBundle\Tests\WebTestCase;
 
-class RequestTest extends WebTestCase
+class ExceptionsTest extends WebTestCase
 {
     protected $mailer;
     protected $statsd;

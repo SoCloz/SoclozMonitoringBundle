@@ -3,7 +3,6 @@
 namespace Socloz\MonitoringBundle\Listener;
 
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Socloz\MonitoringBundle\Notify\Mailer;
 use Socloz\MonitoringBundle\Notify\StatsD;
@@ -16,9 +15,8 @@ use Socloz\MonitoringBundle\Notify\StatsD;
  */
 class Exceptions
 {
-
     /**
-     * @var Mailer 
+     * @var Mailer
      */
     protected $mailer;
 
@@ -47,7 +45,7 @@ class Exceptions
     /**
      * Exception error handler
      *
-     * @param GetResponseForExceptionEvent $event
+     * @param  GetResponseForExceptionEvent $event
      * @return void
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
@@ -61,7 +59,5 @@ class Exceptions
                 $this->statsd->increment("exception");
             }
         }
-        
     }
-    
 }

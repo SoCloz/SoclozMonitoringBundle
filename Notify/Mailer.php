@@ -11,10 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Mailer
 {
-
     /**
      * SwiftMailer
-     * 
+     *
      * @var Object
      */
     protected $mailer;
@@ -22,12 +21,12 @@ class Mailer
     protected $templating;
     protected $from;
     protected $to;
-    
+
     /**
      * @param \Swift_Mailer $mailer
-     * @param string $from
-     * @param string $to 
-     * @param boolean $enabled
+     * @param string        $from
+     * @param string        $to
+     * @param boolean       $enabled
      */
     public function __construct($mailer, $templating, $from, $to, $enabled)
     {
@@ -46,15 +45,17 @@ class Mailer
     /**
      * Send error notify mail
      *
-     * @param Request $request
-     * @param \Exception $exception 
+     * @param Request    $request
+     * @param \Exception $exception
      */
     public function sendException(Request $request, \Exception $exception)
     {
-        if (!$this->enabled) { return; }
-        
+        if (!$this->enabled) {
+            return;
+        }
+
         $message = \Swift_Message::newInstance()
-                ->setSubject('Error message from ' . $request->getHost() . ' - ' . $exception->getMessage())
+                ->setSubject('Error message from '.$request->getHost().' - '.$exception->getMessage())
                 ->setFrom($this->from)
                 ->setTo($this->to)
                 ->setContentType('text/html')
@@ -66,7 +67,7 @@ class Mailer
                                     'exception_class' => \get_class($exception),
                                     'request_headers' => $request->server->getHeaders(),
                                     'request_attributes' => $request->attributes->all(),
-                                    'server_params' => $request->server->all()
+                                    'server_params' => $request->server->all(),
                                 )
                         )
                 );
@@ -74,7 +75,7 @@ class Mailer
         try {
             $this->getMailer()->send($message);
         } catch (Exception $e) {
-            $this->getContainer()->get('logger')->err('Sending mail error - ' . $e->getMessage());
+            $this->getContainer()->get('logger')->err('Sending mail error - '.$e->getMessage());
         }
     }
 }

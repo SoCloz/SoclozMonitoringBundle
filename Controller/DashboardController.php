@@ -8,9 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Test controller 
+ * Test controller
  */
-class TestController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Generates an exception
@@ -42,6 +42,7 @@ class TestController extends Controller
     public function timingAction($time)
     {
         sleep($time);
+
         return new Response("waking up");
     }
 }

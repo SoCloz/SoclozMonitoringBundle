@@ -11,7 +11,6 @@
 namespace Socloz\MonitoringBundle\RequestId\Adapters;
 
 use Guzzle\Common\Event;
-use Guzzle\Service\Builder\ServiceBuilder;
 use Socloz\MonitoringBundle\RequestId\RequestId;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -53,5 +52,4 @@ class Guzzle implements EventSubscriberInterface
         $request = $event['request'];
         $request->addHeader("X-RequestId", $this->requestId);
     }
-
 }

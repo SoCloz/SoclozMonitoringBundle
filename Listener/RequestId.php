@@ -13,7 +13,6 @@ namespace Socloz\MonitoringBundle\Listener;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-
 use Socloz\MonitoringBundle\RequestId\RequestId as RequestIdService;
 
 /**

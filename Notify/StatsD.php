@@ -4,14 +4,13 @@ namespace Socloz\MonitoringBundle\Notify;
 
 /**
  * StatsD client
- * 
+ *
  * inspired by https://github.com/etsy/statsd/blob/master/examples/php-example.php
  *
  * @author etsy, Jean-François Bustarret
  */
 class StatsD
 {
-
     protected $host;
     protected $port;
     protected $prefix;
@@ -32,7 +31,7 @@ class StatsD
         $this->mergePackets = $mergePackets;
         $this->packetSize = $packetSize;
     }
-    
+
     public function doNotTrack()
     {
         $this->doNotTrack = true;
@@ -42,15 +41,15 @@ class StatsD
     {
         $this->flush();
     }
-    
+
     /**
      * Log timing information
      *
-     * @param string $stats The metric to in log timing info for.
-     * @param float $time The ellapsed time (ms) to log
+     * @param string  $stats      The metric to in log timing info for.
+     * @param float   $time       The ellapsed time (ms) to log
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      **/
-    public function timing($stat, $time, $sampleRate=1)
+    public function timing($stat, $time, $sampleRate = 1)
     {
         $this->queue(array($stat => "$time|ms"), $sampleRate);
     }
@@ -59,7 +58,7 @@ class StatsD
      * Sets one or more gauges to a value
      *
      * @param string|array $stats The metric(s) to set.
-     * @param float $value The value for the stats.
+     * @param float        $value The value for the stats.
      **/
     public function gauge($stats, $value)
     {
@@ -78,7 +77,7 @@ class StatsD
      * with each request with a key of "uniques" (or similar).
      *
      * @param string|array $stats The metric(s) to set.
-     * @param float $value The value for the stats.
+     * @param float        $value The value for the stats.
      **/
     public function set($stats, $value)
     {
@@ -88,11 +87,11 @@ class StatsD
     /**
      * Increments one or more stats counters
      *
-     * @param string|array $stats The metric(s) to increment.
-     * @param float|1 $sampleRate the rate (0-1) for sampling.
+     * @param  string|array $stats      The metric(s) to increment.
+     * @param  float|1      $sampleRate the rate (0-1) for sampling.
      * @return boolean
      **/
-    public function increment($stats, $sampleRate=1)
+    public function increment($stats, $sampleRate = 1)
     {
         $this->updateStats($stats, 1, $sampleRate);
     }
@@ -100,11 +99,11 @@ class StatsD
     /**
      * Decrements one or more stats counters.
      *
-     * @param string|array $stats The metric(s) to decrement.
-     * @param float|1 $sampleRate the rate (0-1) for sampling.
+     * @param  string|array $stats      The metric(s) to decrement.
+     * @param  float|1      $sampleRate the rate (0-1) for sampling.
      * @return boolean
      **/
-    public function decrement($stats, $sampleRate=1)
+    public function decrement($stats, $sampleRate = 1)
     {
         $this->updateStats($stats, -1, $sampleRate);
     }
@@ -112,16 +111,18 @@ class StatsD
     /**
      * Updates one or more stats counters by arbitrary amounts.
      *
-     * @param string|array $stats The metric(s) to update. Should be either a string or array of metrics.
-     * @param int|1 $delta The amount to increment/decrement each metric by.
-     * @param float|1 $sampleRate the rate (0-1) for sampling.
+     * @param  string|array $stats      The metric(s) to update. Should be either a string or array of metrics.
+     * @param  int|1        $delta      The amount to increment/decrement each metric by.
+     * @param  float|1      $sampleRate the rate (0-1) for sampling.
      * @return boolean
      **/
-    public function updateStats($stats, $delta=1, $sampleRate=1)
+    public function updateStats($stats, $delta = 1, $sampleRate = 1)
     {
-        if (!is_array($stats)) { $stats = array($stats); }
+        if (!is_array($stats)) {
+            $stats = array($stats);
+        }
         $data = array();
-        foreach($stats as $stat) {
+        foreach ($stats as $stat) {
             $data[$stat] = "$delta|c";
         }
 
@@ -132,9 +133,9 @@ class StatsD
      * queues data
      *
      * @param array $data
-     * @param int $sampleRate
+     * @param int   $sampleRate
      */
-    protected function queue($data, $sampleRate=1)
+    protected function queue($data, $sampleRate = 1)
     {
         if ($sampleRate < 1) {
             foreach ($data as $stat => $value) {
@@ -163,10 +164,12 @@ class StatsD
             return;
         }
 
-        if (empty($this->queue)) { return; }
+        if (empty($this->queue)) {
+            return;
+        }
 
         if ($this->mergePackets) {
-            $this->send(join("\n", $this->queue));
+            $this->send(implode("\n", $this->queue));
         } else {
             foreach ($this->queue as $data) {
                 $this->send($data);
@@ -188,7 +191,9 @@ class StatsD
         // Wrap this in a try/catch - failures in any of this should be silently ignored
         try {
             $fp = fsockopen("udp://$this->host", $this->port, $errno, $errstr);
-            if (! $fp) { return; }
+            if (! $fp) {
+                return;
+            }
             fwrite($fp, $data);
             fclose($fp);
         } catch (\Exception $e) {

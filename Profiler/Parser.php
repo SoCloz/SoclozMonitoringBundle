@@ -15,17 +15,16 @@ namespace Socloz\MonitoringBundle\Profiler;
  */
 class Parser
 {
-    
     protected $name;
     protected $type;
     protected $calls;
-    
+
     protected $time = 0;
     protected $count = 0;
 
     /**
      * Initializes probes
-     * 
+     *
      * @param array $probes
      */
     public function __construct($probes)
@@ -42,7 +41,7 @@ class Parser
 
     /**
      * Parses Xhprof data
-     * 
+     *
      * @param array $xhprof_data
      */
     public function parse($xhprof_data)
@@ -66,11 +65,11 @@ class Parser
             }
         }
     }
-    
+
     public function addCallData($probes, $callData)
     {
         foreach ($probes as $probe) {
             $probe->addCallData($callData);
         }
-    } 
+    }
 }

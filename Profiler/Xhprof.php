@@ -13,29 +13,29 @@ namespace Socloz\MonitoringBundle\Profiler;
 /**
  * Xhprof profiler
  */
-class Xhprof {
-
+class Xhprof
+{
     protected $profiling;
-    
+
     protected $mailer;
     protected $statsd;
-    
+
     protected $parser;
     protected $probes;
     protected $memory;
-    
+
     protected $timers = array();
     protected $counters = array();
-    
+
     public function __construct($parserClass, $probes, $memory)
     {
         $this->parser = new $parserClass($probes);
         $this->probes = $probes;
         $this->memory = $memory;
     }
-    
+
     /**
-     * Starts the profiling 
+     * Starts the profiling
      */
     public function startProfiling()
     {
@@ -73,24 +73,24 @@ class Xhprof {
                 $this->counters[$name] = $probe->getCount();
             }
         }
-        
+
         return true;
     }
 
     /**
      * Returns the list of timers
-     * 
-     * @return array 
+     *
+     * @return array
      */
     public function getTimers()
     {
         return $this->timers;
     }
-    
+
     /**
      * Returns the list of counters
-     * 
-     * @return array 
+     *
+     * @return array
      */
     public function getCounters()
     {

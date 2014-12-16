@@ -15,7 +15,6 @@ namespace Socloz\MonitoringBundle\RequestId;
  */
 class Generator
 {
-
     /**
      * @return string
      */

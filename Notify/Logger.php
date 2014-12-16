@@ -17,13 +17,11 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Logger
 {
-    
     protected $logger;
 
     public function __construct($logger)
     {
         $this->logger = $logger;
-        
     }
 
     /**
@@ -41,5 +39,4 @@ class Logger
         }
         $this->logger->info($msg);
     }
-
 }

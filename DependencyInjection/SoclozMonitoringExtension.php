@@ -16,7 +16,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
-
 use Socloz\MonitoringBundle\Profiler\Probe;
 
 class SoclozMonitoringExtension extends Extension
@@ -44,19 +43,21 @@ class SoclozMonitoringExtension extends Extension
         if (isset($config['profiler']['enable']) && $config['profiler']['enable']) {
             $probes = array();
             foreach ($config['profiler'] as $key => $value) {
-                if ($key == 'enable' || $key == "sampling" || $key == "request" || !$value) { continue; }
+                if ($key == 'enable' || $key == "sampling" || $key == "request" || !$value) {
+                    continue;
+                }
                 $probes = array_merge($probes, $this->createProfilerProbes($key, $container));
             }
             $container->getDefinition('socloz_monitoring.profiler')
                 ->replaceArgument(1, $probes);
         }
     }
-    
+
     /**
      * Generates a probe service for a configured probe
-     * 
-     * @param string $name
-     * @param ContainerBuilder $container
+     *
+     * @param  string           $name
+     * @param  ContainerBuilder $container
      * @return Reference
      */
     private function createProfilerProbes($name, ContainerBuilder $container)
@@ -64,15 +65,16 @@ class SoclozMonitoringExtension extends Extension
         $key = sprintf("socloz_monitoring.profiler.probe.definition.%s", $name);
         if ($container->hasParameter($key)) {
             $definition = $container->getParameter($key);
+
             return array($this->createProbeDefinition($name, Probe::TRACKER_CALLS|Probe::TRACKER_TIMING, $definition, $container));
         } else {
             return array(
                 $this->createProbeDefinition($name, Probe::TRACKER_CALLS, $container->getParameter("$key.calls"), $container),
-                $this->createProbeDefinition($name, Probe::TRACKER_TIMING, $container->getParameter("$key.timing"), $container)
+                $this->createProbeDefinition($name, Probe::TRACKER_TIMING, $container->getParameter("$key.timing"), $container),
             );
         }
     }
-    
+
     private function createProbeDefinition($name, $tracker, $definition, ContainerBuilder $container)
     {
         $id = sprintf('socloz_monitoring.profiler.%s_%s_%s_probe', $name, $tracker&Probe::TRACKER_CALLS ? "calls" : "", $tracker&Probe::TRACKER_TIMING ? "timing" : "");
@@ -84,7 +86,7 @@ class SoclozMonitoringExtension extends Extension
             ->replaceArgument(2, $definition)
             ->addTag('socloz_monitoring.profiler.probe')
         ;
-            
+
         return new Reference($id);
     }
 
@@ -92,5 +94,4 @@ class SoclozMonitoringExtension extends Extension
     {
         return 'socloz_monitoring';
     }
-
 }

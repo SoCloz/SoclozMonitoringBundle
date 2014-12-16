@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Test controller 
+ * Test controller
  */
 class TestController extends Controller
 {
@@ -28,6 +28,7 @@ class TestController extends Controller
     public function timingAction($time)
     {
         sleep($time);
+
         return new Response("waking up");
     }
 
@@ -37,9 +38,10 @@ class TestController extends Controller
     public function pregAction($count)
     {
         $res = true;
-        for ($i=0; $i<$count; $i++) {
+        for ($i = 0; $i<$count; $i++) {
             $res &= $this->doSomething();
         }
+
         return new Response($res ? "foo and bar match ?!?" : "foo and bar do not match");
     }
 
@@ -49,9 +51,9 @@ class TestController extends Controller
     public function requestIdAction()
     {
         $requestId = $this->get("socloz_monitoring.request_id");
+
         return new Response($requestId->getRequestId());
     }
-
 
     /**
      * Profiled function
