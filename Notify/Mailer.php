@@ -2,6 +2,7 @@
 
 namespace Socloz\MonitoringBundle\Notify;
 
+use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -24,11 +25,12 @@ class Mailer
 
     /**
      * @param \Swift_Mailer $mailer
+     * @param               $templating
      * @param string        $from
      * @param string        $to
      * @param boolean       $enabled
      */
-    public function __construct($mailer, $templating, $from, $to, $enabled)
+    public function __construct(\Swift_Mailer $mailer, TwigEngine $templating, $from, $to, $enabled)
     {
         $this->mailer = $mailer;
         $this->templating = $templating;
@@ -74,7 +76,7 @@ class Mailer
 
         try {
             $this->getMailer()->send($message);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->getContainer()->get('logger')->err('Sending mail error - '.$e->getMessage());
         }
     }

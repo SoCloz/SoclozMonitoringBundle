@@ -26,6 +26,7 @@
         "php": ">=5.3.2",
         "symfony/framework-bundle": "~2.0",
         "symfony/browser-kit": "~2.0",
+        "symfony/twig-bundle": "~2.0",
         "sensio/framework-extra-bundle": "@stable",
         "guzzle/guzzle" : "@stable",
         "swiftmailer/swiftmailer": "@stable"
