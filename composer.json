@@ -2,7 +2,18 @@
     "name": "socloz/monitoring-bundle",
     "description": "A profiling/monitoring Symfony2 bundle for production servers - alerts on exceptions, logs profiling data & sends data to statsd/graphite",
     "homepage": "https://github.com/SoCloz/SoclozMonitoringBundle",
-    "keywords": [ "monitoring", "profiling", "alerting", "production", "exceptions", "email", "xhprof", "statsd", "graphite" ],
+    "type": "symfony-bundle",
+    "keywords": [
+        "monitoring",
+        "profiling",
+        "alerting",
+        "production",
+        "exceptions",
+        "email",
+        "xhprof",
+        "statsd",
+        "graphite"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -13,10 +24,16 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/symfony": ">=2.0,<=2.6"
+        "symfony/symfony": ">=2.0,<=2.6",
+        "sensio/framework-extra-bundle": "@stable",
+        "guzzle/guzzle" : "@stable",
+        "swiftmailer/swiftmailer": "@stable"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable"
     },
     "autoload": {
-        "psr-0": { "Socloz\\MonitoringBundle": "" }
+        "psr-0": {"Socloz\\MonitoringBundle": ""}
     },
     "target-dir": "Socloz/MonitoringBundle"
 }
