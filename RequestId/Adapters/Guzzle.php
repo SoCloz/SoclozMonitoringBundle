@@ -20,13 +20,22 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class Guzzle implements EventSubscriberInterface
 {
+    /**
+     * @var string
+     */
     protected $requestId;
 
+    /**
+     * @param RequestId $requestId
+     */
     public function __construct(RequestId $requestId)
     {
         $this->requestId = $requestId->getRequestId();
     }
 
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return array(

@@ -20,6 +20,10 @@ class Processor
     protected $requestId;
     protected $addPid;
 
+    /**
+     * @param RequestId $requestId
+     * @param           $addPid
+     */
     public function __construct(RequestId $requestId, $addPid)
     {
         $this->requestId = $requestId;

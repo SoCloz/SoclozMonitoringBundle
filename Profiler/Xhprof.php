@@ -27,7 +27,8 @@ class Xhprof {
     protected $timers = array();
     protected $counters = array();
     
-    public function __construct($parserClass, $probes, $memory) {
+    public function __construct($parserClass, $probes, $memory)
+    {
         $this->parser = new $parserClass($probes);
         $this->probes = $probes;
         $this->memory = $memory;
@@ -81,7 +82,8 @@ class Xhprof {
      * 
      * @return array 
      */
-    public function getTimers() {
+    public function getTimers()
+    {
         return $this->timers;
     }
     
@@ -90,7 +92,8 @@ class Xhprof {
      * 
      * @return array 
      */
-    public function getCounters() {
+    public function getCounters()
+    {
         return $this->counters;
     }
 }

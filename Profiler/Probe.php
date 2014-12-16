@@ -75,7 +75,8 @@ class Probe
      * 
      * @return int 
      */
-    public function getCount() {
+    public function getCount()
+    {
         return $this->count;
     }
     
@@ -84,7 +85,8 @@ class Probe
      * 
      * @return string 
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
     

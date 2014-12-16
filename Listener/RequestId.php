@@ -21,15 +21,26 @@ use Socloz\MonitoringBundle\RequestId\RequestId as RequestIdService;
  */
 class RequestId
 {
+    /**
+     * @var RequestIdService
+     */
     protected $requestId;
+
     protected $logger;
 
+    /**
+     * @param RequestIdService $requestId
+     * @param                  $logger
+     */
     public function __construct(RequestIdService $requestId, $logger)
     {
         $this->requestId = $requestId;
         $this->logger = $logger;
     }
 
+    /**
+     * @param GetResponseEvent $event
+     */
     public function onCoreRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
@@ -44,6 +55,9 @@ class RequestId
         }
     }
 
+    /**
+     * @param FilterResponseEvent $event
+     */
     public function onCoreResponse(FilterResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {

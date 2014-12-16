@@ -57,7 +57,7 @@ class SoclozMonitoringExtension extends Extension
      * 
      * @param string $name
      * @param ContainerBuilder $container
-     * @return \Symfony\Component\DependencyInjection\Reference 
+     * @return Reference
      */
     private function createProfilerProbes($name, ContainerBuilder $container)
     {

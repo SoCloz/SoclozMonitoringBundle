@@ -14,9 +14,11 @@ class TestController extends Controller
 {
     /**
      * Generates an exception
-     * 
+     *
      * @Route("/socloz_monitoring/exception/{class}")
      * @Template()
+     *
+     * @param $class
      */
     public function generateExceptionAction($class)
     {
@@ -29,9 +31,13 @@ class TestController extends Controller
 
     /**
      * Sleeps for a period of time
-     * 
+     *
      * @Route("/socloz_monitoring/timing/{time}")
      * @Template()
+     *
+     * @param $time
+     *
+     * @return Response
      */
     public function timingAction($time)
     {

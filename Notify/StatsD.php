@@ -154,9 +154,9 @@ class StatsD
         }
     }
 
-    /*
+    /**
      * Flushes the queue
-     **/
+     */
     public function flush()
     {
         if ($this->doNotTrack) {
@@ -176,9 +176,9 @@ class StatsD
         $this->queueSize = 0;
     }
 
-    /*
+    /**
      * Sends metrics over UDP
-     **/
+     */
     protected function send($data)
     {
         if ($this->doNotTrack) {

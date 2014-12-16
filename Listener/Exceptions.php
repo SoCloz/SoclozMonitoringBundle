@@ -21,12 +21,21 @@ class Exceptions
      * @var Mailer 
      */
     protected $mailer;
+
+    /**
+     * @var StatsD
+     */
     protected $statsd;
+
+    /**
+     * @var array
+     */
     protected $ignore;
 
     /**
-     * @param Mailer $mailer 
-     * @param StatsD $statsd 
+     * @param Mailer $mailer
+     * @param StatsD $statsd
+     * @param        $ignore
      */
     public function __construct($mailer, $statsd, $ignore)
     {

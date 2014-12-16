@@ -25,7 +25,12 @@ class Logger
         $this->logger = $logger;
         
     }
-    
+
+    /**
+     * @param Request $request
+     * @param array   $timing
+     * @param array   $calls
+     */
     public function log(Request $request = null, array $timing, array $calls)
     {
         $msg = sprintf("%s : %d ms", ($request ? $request->getRequestUri() : "-"), $timing['request']);

@@ -16,7 +16,6 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * Loads all request_id adapters
  */
-
 class AdapterCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)

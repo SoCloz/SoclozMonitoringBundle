@@ -25,11 +25,15 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  */
 class Profiler
 {
+
     protected $profiler;
+
     protected $statsd;
+
     protected $sampling;
 
     protected $start;
+
     protected $profiling;
 
     public function __construct($profiler, $statsd, $logger, $sampling)

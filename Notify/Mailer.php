@@ -77,5 +77,4 @@ class Mailer
             $this->getContainer()->get('logger')->err('Sending mail error - ' . $e->getMessage());
         }
     }
-    
 }
