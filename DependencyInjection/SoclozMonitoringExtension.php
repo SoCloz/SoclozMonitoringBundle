@@ -34,21 +34,21 @@ class SoclozMonitoringExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
         foreach ($config as $key => $subConfig) {
             foreach ($subConfig as $subKey => $value) {
-                $container->setParameter($this->getAlias() . '.' . $key . '.' . $subKey, $value);
+                $container->setParameter($this->getAlias().'.'.$key.'.'.$subKey, $value);
             }
         }
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         foreach ($this->modules as $module) {
             if (isset($config[$module]['enable']) && $config[$module]['enable']) {
-                $loader->load($module . '.xml');
+                $loader->load($module.'.xml');
             }
         }
         if (isset($config['profiler']['enable']) && $config['profiler']['enable']) {
             $probes = array();
             foreach ($config['profiler'] as $key => $value) {
-                if (in_array($key, array('enable', 'sampling','request')) || !$value) {
+                if (in_array($key, array('enable', 'sampling', 'request')) || !$value) {
                     continue;
                 }
                 $probes = array_merge($probes, $this->createProfilerProbes($key, $container));
@@ -61,8 +61,8 @@ class SoclozMonitoringExtension extends Extension
     /**
      * Generates a probe service for a configured probe
      *
-     * @param  string           $name
-     * @param  ContainerBuilder $container
+     * @param string           $name
+     * @param ContainerBuilder $container
      *
      * @return Reference[]
      */
@@ -78,12 +78,12 @@ class SoclozMonitoringExtension extends Extension
                 $this->createProbeDefinition(
                     $name,
                     Probe::TRACKER_CALLS,
-                    $container->getParameter($key . '.calls'), $container
+                    $container->getParameter($key.'.calls'), $container
                 ),
                 $this->createProbeDefinition(
                     $name,
                     Probe::TRACKER_TIMING,
-                    $container->getParameter($key. '.timing'),
+                    $container->getParameter($key.'.timing'),
                     $container
                 ),
             );

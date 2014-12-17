@@ -69,7 +69,7 @@ class Mailer
         }
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('Error message from ' . $request->getHost() . ' - ' . $exception->getMessage())
+            ->setSubject('Error message from '.$request->getHost().' - '.$exception->getMessage())
             ->setFrom($this->from)
             ->setTo($this->to)
             ->setContentType('text/html')
@@ -89,7 +89,7 @@ class Mailer
         try {
             $this->getMailer()->send($message);
         } catch (\Exception $e) {
-            $this->getContainer()->get('logger')->err('Sending mail error - ' . $e->getMessage());
+            $this->getContainer()->get('logger')->err('Sending mail error - '.$e->getMessage());
         }
     }
 }

@@ -18,9 +18,24 @@ class Probe
     const TRACKER_TIMING = 1;
     const TRACKER_CALLS = 2;
 
+    /**
+     * @var string
+     */
     protected $name;
+
+    /**
+     * @var int
+     */
     protected $tracker;
+
+    /**
+     * @var string
+     */
     protected $type;
+
+    /**
+     * @var array
+     */
     protected $calls;
 
     /**
@@ -35,8 +50,8 @@ class Probe
 
     /**
      * @param string $name
-     * @param $tracker
-     * @param array $definition
+     * @param int $tracker
+     * @param array  $definition
      */
     public function __construct($name, $tracker, array $definition = array())
     {
@@ -46,11 +61,17 @@ class Probe
         $this->calls = isset($definition['calls']) ? $definition['calls'] : array();
     }
 
+    /**
+     * @return int
+     */
     public function isTimingProbe()
     {
         return $this->tracker&self::TRACKER_TIMING;
     }
 
+    /**
+     * @return int
+     */
     public function isCallsProbe()
     {
         return $this->tracker&self::TRACKER_CALLS;
@@ -114,7 +135,7 @@ class Probe
     /**
      * Get the probe type
      *
-     * @return string
+     * @return array
      */
     public function getCalls()
     {

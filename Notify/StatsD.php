@@ -62,8 +62,8 @@ class StatsD
     /**
      * Log timing information
      *
-     * @param string $stats The metric to in log timing info for.
-     * @param float  $time The ellapsed time (ms) to log
+     * @param string  $stats      The metric to in log timing info for.
+     * @param float   $time       The ellapsed time (ms) to log
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      **/
     public function timing($stat, $time, $sampleRate = 1)
@@ -103,8 +103,8 @@ class StatsD
     /**
      * Increments one or more stats counters
      *
-     * @param  string|array $stats The metric(s) to increment.
-     * @param  float|1      $sampleRate the rate (0-1) for sampling.
+     * @param string|array $stats      The metric(s) to increment.
+     * @param float|1      $sampleRate the rate (0-1) for sampling.
      *
      * @return boolean
      **/
@@ -116,8 +116,8 @@ class StatsD
     /**
      * Decrements one or more stats counters.
      *
-     * @param  string|array $stats The metric(s) to decrement.
-     * @param  float|1      $sampleRate the rate (0-1) for sampling.
+     * @param string|array $stats      The metric(s) to decrement.
+     * @param float|1      $sampleRate the rate (0-1) for sampling.
      *
      * @return boolean
      **/
@@ -129,9 +129,9 @@ class StatsD
     /**
      * Updates one or more stats counters by arbitrary amounts.
      *
-     * @param  string|array $stats The metric(s) to update. Should be either a string or array of metrics.
-     * @param  int|1        $delta      The amount to increment/decrement each metric by.
-     * @param  float|1      $sampleRate the rate (0-1) for sampling.
+     * @param string|array $stats      The metric(s) to update. Should be either a string or array of metrics.
+     * @param int|1        $delta      The amount to increment/decrement each metric by.
+     * @param float|1      $sampleRate the rate (0-1) for sampling.
      *
      * @return boolean
      **/

@@ -44,7 +44,7 @@ class Exceptions
     /**
      * Exception error handler
      *
-     * @param  GetResponseForExceptionEvent $event
+     * @param GetResponseForExceptionEvent $event
      *
      * @return void
      */

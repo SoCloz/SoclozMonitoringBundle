@@ -9,6 +9,7 @@
  */
 
 namespace Socloz\MonitoringBundle\Profiler\Parser;
+
 use Socloz\MonitoringBundle\Profiler\Probe;
 
 /**
@@ -17,10 +18,22 @@ use Socloz\MonitoringBundle\Profiler\Probe;
 class Parser implements ParserInterface
 {
     protected $name;
+
     protected $type;
+
+    /**
+     * @var array
+     */
     protected $calls;
 
+    /**
+     * @var int
+     */
     protected $time = 0;
+
+    /**
+     * @var int
+     */
     protected $count = 0;
 
     /**
@@ -41,8 +54,6 @@ class Parser implements ParserInterface
     }
 
     /**
-     * Parses Xhprof data
-     *
      * @param array $xhprof_data
      */
     public function parse($xhprof_data)
@@ -69,7 +80,7 @@ class Parser implements ParserInterface
 
     /**
      * @param Probe[] $probes
-     * @param array $callData
+     * @param array   $callData
      */
     public function addCallData($probes, $callData)
     {

@@ -33,4 +33,4 @@ class GuzzleTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($requestId->getRequestId(), $event['request']->getHeader("X-RequestId"));
     }
-} 
+}

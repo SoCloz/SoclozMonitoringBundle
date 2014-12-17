@@ -16,8 +16,7 @@ class ProcessorTest extends \PHPUnit_Framework_TestCase
         $extra = $processor(array());
 
         $this->assertEquals(
-            array('extra' =>
-                array(
+            array('extra' => array(
                     'request_id' => $requestId->getRequestId(),
                     'pid' => $requestId->getPid(),
                 ),

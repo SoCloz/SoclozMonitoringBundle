@@ -9,6 +9,7 @@
  */
 
 namespace Socloz\MonitoringBundle\Profiler;
+
 use Socloz\MonitoringBundle\Profiler\Parser\ParserInterface;
 
 /**
@@ -47,7 +48,7 @@ class Xhprof
     private $profiling;
 
     /**
-     * @param string $parserClass
+     * @param string  $parserClass
      * @param Probe[] $probes
      * @param $memory
      */
