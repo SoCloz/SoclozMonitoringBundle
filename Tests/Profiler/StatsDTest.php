@@ -44,6 +44,57 @@ class StatsDTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($statsd->getDoNotTrack());
     }
 
+    /**
+     * TODO REFACTOR
+     */
+    public function testGauge()
+    {
+        $statsd = new StatsD('localhost', 42, 'prefix', false, true, self::PACKET_SIZE);
+        $statsd->gauge(array('counter1', 'country2'), 1);
+        $statsd->flush();
+        $sent = $statsd->getSent();
+        $this->assertEquals(1, count($sent), "flush should send something");
+        $this->assertEquals("prefix.counter.Array:1|c", $sent[0], "flush should send both counters");
+    }
+
+    /**
+     * TODO REFACTOR
+     */
+    public function testSet()
+    {
+        $statsd = new StatsD('localhost', 42, 'prefix', false, true, self::PACKET_SIZE);
+        $statsd->set('counter1', 1);
+        $statsd->set('counter2', 1);
+        $statsd->flush();
+        $sent = $statsd->getSent();
+        $this->assertEquals(1, count($sent), "flush should send something");
+        $this->assertEquals("prefix.counter.counter1:1|c\nprefix.counter.counter2:1|c", $sent[0], "flush should send both counters");
+    }
+
+    public function testIncrement()
+    {
+        $statsd = new StatsD('localhost', 42, 'prefix', false, true, self::PACKET_SIZE);
+        $statsd->increment('counter1', 1);
+        $statsd->increment('counter2', 1);
+        $this->assertEquals(0, count($statsd->getSent()), "should not have sent anything");
+        $statsd->flush();
+        $sent = $statsd->getSent();
+        $this->assertEquals(1, count($sent), "flush should send something");
+        $this->assertEquals("prefix.counter.counter1:1|c\nprefix.counter.counter2:1|c", $sent[0], "flush should send both counters");
+    }
+
+    public function testDecrement()
+    {
+        $statsd = new StatsD('localhost', 42, 'prefix', false, true, self::PACKET_SIZE);
+        $statsd->decrement('counter1', 1);
+        $statsd->decrement('counter2', 1);
+        $this->assertEquals(0, count($statsd->getSent()), "should not have sent anything");
+        $statsd->flush();
+        $sent = $statsd->getSent();
+        $this->assertEquals(1, count($sent), "flush should send something");
+        $this->assertEquals("prefix.counter.counter1:-1|c\nprefix.counter.counter2:-1|c", $sent[0], "flush should send both counters");
+    }
+
     public function testFlush()
     {
         $statsd = new StatsD('localhost', 42, 'prefix', false, true, self::PACKET_SIZE);

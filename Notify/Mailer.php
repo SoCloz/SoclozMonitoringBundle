@@ -12,8 +12,8 @@ use Symfony\Component\Templating\EngineInterface;
 class Mailer
 {
     /**
-     * SwiftMailer
-     * @var Object
+     *
+     * @var \Swift_Mailer
      */
     protected $mailer;
 
@@ -48,6 +48,9 @@ class Mailer
         $this->enabled = $enabled;
     }
 
+    /**
+     * @return \Swift_Mailer
+     */
     public function getMailer()
     {
         return $this->mailer;
