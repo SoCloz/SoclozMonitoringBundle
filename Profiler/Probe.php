@@ -23,10 +23,22 @@ class Probe
     protected $type;
     protected $calls;
 
+    /**
+     * @var int
+     */
     protected $time = 0;
+
+    /**
+     * @var int
+     */
     protected $count = 0;
 
-    public function __construct($name, $tracker, $definition)
+    /**
+     * @param string $name
+     * @param $tracker
+     * @param array $definition
+     */
+    public function __construct($name, $tracker, array $definition = array())
     {
         $this->name = $name;
         $this->tracker = $tracker;
@@ -49,7 +61,7 @@ class Probe
      *
      * @param array $callData
      */
-    public function addCallData($callData)
+    public function addCallData(array $callData)
     {
         if ($this->isTimingProbe()) {
             $this->time += (int) $callData['wt']/1000; // ms

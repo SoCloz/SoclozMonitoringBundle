@@ -10,6 +10,7 @@
 
 namespace Socloz\MonitoringBundle\Notify;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -17,9 +18,15 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Logger
 {
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
 
-    public function __construct($logger)
+    /**
+     * @param LoggerInterface $logger
+     */
+    public function __construct(LoggerInterface $logger = null)
     {
         $this->logger = $logger;
     }

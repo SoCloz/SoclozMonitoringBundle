@@ -8,12 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Socloz\MonitoringBundle\Profiler;
+namespace Socloz\MonitoringBundle\Profiler\Parser;
+use Socloz\MonitoringBundle\Profiler\Probe;
 
 /**
  * A XHprof data parser
  */
-class Parser
+class Parser implements ParserInterface
 {
     protected $name;
     protected $type;
@@ -25,7 +26,7 @@ class Parser
     /**
      * Initializes probes
      *
-     * @param array $probes
+     * @param Probe[] $probes
      */
     public function __construct($probes)
     {
@@ -66,6 +67,10 @@ class Parser
         }
     }
 
+    /**
+     * @param Probe[] $probes
+     * @param array $callData
+     */
     public function addCallData($probes, $callData)
     {
         foreach ($probes as $probe) {

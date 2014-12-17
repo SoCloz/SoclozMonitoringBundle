@@ -10,8 +10,10 @@
 
 namespace Socloz\MonitoringBundle\Listener;
 
+use Socloz\MonitoringBundle\Notify\Logger;
+use Socloz\MonitoringBundle\Notify\StatsD;
+use Socloz\MonitoringBundle\Profiler\Xhprof;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
@@ -22,17 +24,38 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  */
 class Profiler
 {
+    /**
+     * @var Xhprof
+     */
     protected $profiler;
 
+    /**
+     * @var StatsD
+     */
     protected $statsd;
 
+    /**
+     * @var int
+     */
     protected $sampling;
 
+    /**
+     * @var int
+     */
     protected $start;
 
+    /**
+     * @var boolean
+     */
     protected $profiling;
 
-    public function __construct($profiler, $statsd, $logger, $sampling)
+    /**
+     * @param Xhprof $profiler
+     * @param StatsD $statsd
+     * @param Logger $logger
+     * @param int    $sampling
+     */
+    public function __construct(Xhprof $profiler, StatsD $statsd, Logger $logger = null, $sampling = 100)
     {
         $this->profiler = $profiler;
         $this->statsd = $statsd;
@@ -40,6 +63,9 @@ class Profiler
         $this->sampling = $sampling;
     }
 
+    /**
+     * @param GetResponseEvent $event
+     */
     public function onCoreRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
@@ -52,6 +78,9 @@ class Profiler
         }
     }
 
+    /**
+     * @param FilterResponseEvent $event
+     */
     public function onCoreResponse(FilterResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {

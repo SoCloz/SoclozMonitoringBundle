@@ -4,9 +4,7 @@ namespace Socloz\MonitoringBundle\Notify;
 
 /**
  * StatsD client
- *
  * inspired by https://github.com/etsy/statsd/blob/master/examples/php-example.php
- *
  * @author etsy, Jean-François Bustarret
  */
 class StatsD
@@ -17,11 +15,30 @@ class StatsD
     protected $alwaysFlush;
     protected $mergePackets;
     protected $packetSize;
+
+    /**
+     * @var bool
+     */
     protected $doNotTrack = false;
 
+    /**
+     * @var int
+     */
     protected $queueSize = 0;
+
+    /**
+     * @var array
+     */
     protected $queue = array();
 
+    /**
+     * @param string  $host
+     * @param int     $port
+     * @param string  $prefix
+     * @param boolean $alwaysFlush
+     * @param boolean $mergePackets
+     * @param int     $packetSize
+     */
     public function __construct($host, $port, $prefix, $alwaysFlush, $mergePackets, $packetSize)
     {
         $this->host = $host;
@@ -45,8 +62,8 @@ class StatsD
     /**
      * Log timing information
      *
-     * @param string  $stats      The metric to in log timing info for.
-     * @param float   $time       The ellapsed time (ms) to log
+     * @param string $stats The metric to in log timing info for.
+     * @param float  $time The ellapsed time (ms) to log
      * @param float|1 $sampleRate the rate (0-1) for sampling.
      **/
     public function timing($stat, $time, $sampleRate = 1)
@@ -71,7 +88,6 @@ class StatsD
      * of unique occurences of values between flushes. The backend
      * receives the number of unique events that happened since
      * the last flush.
-     *
      * The reference use case involved tracking the number of active
      * and logged in users by sending the current userId of a user
      * with each request with a key of "uniques" (or similar).
@@ -87,8 +103,9 @@ class StatsD
     /**
      * Increments one or more stats counters
      *
-     * @param  string|array $stats      The metric(s) to increment.
+     * @param  string|array $stats The metric(s) to increment.
      * @param  float|1      $sampleRate the rate (0-1) for sampling.
+     *
      * @return boolean
      **/
     public function increment($stats, $sampleRate = 1)
@@ -99,8 +116,9 @@ class StatsD
     /**
      * Decrements one or more stats counters.
      *
-     * @param  string|array $stats      The metric(s) to decrement.
+     * @param  string|array $stats The metric(s) to decrement.
      * @param  float|1      $sampleRate the rate (0-1) for sampling.
+     *
      * @return boolean
      **/
     public function decrement($stats, $sampleRate = 1)
@@ -111,9 +129,10 @@ class StatsD
     /**
      * Updates one or more stats counters by arbitrary amounts.
      *
-     * @param  string|array $stats      The metric(s) to update. Should be either a string or array of metrics.
+     * @param  string|array $stats The metric(s) to update. Should be either a string or array of metrics.
      * @param  int|1        $delta      The amount to increment/decrement each metric by.
      * @param  float|1      $sampleRate the rate (0-1) for sampling.
+     *
      * @return boolean
      **/
     public function updateStats($stats, $delta = 1, $sampleRate = 1)
@@ -148,7 +167,7 @@ class StatsD
                 $this->flush();
             }
             $this->queue[] = $msg;
-            $this->queueSize += strlen($msg)+1;
+            $this->queueSize += strlen($msg) + 1;
         }
         if ($this->alwaysFlush) {
             $this->flush();
@@ -191,7 +210,7 @@ class StatsD
         // Wrap this in a try/catch - failures in any of this should be silently ignored
         try {
             $fp = fsockopen("udp://$this->host", $this->port, $errno, $errstr);
-            if (! $fp) {
+            if (!$fp) {
                 return;
             }
             fwrite($fp, $data);

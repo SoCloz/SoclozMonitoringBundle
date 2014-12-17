@@ -2,14 +2,13 @@
 
 namespace Socloz\MonitoringBundle\Listener;
 
-use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Socloz\MonitoringBundle\Notify\Mailer;
 use Socloz\MonitoringBundle\Notify\StatsD;
+use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
 /**
  * Error notification listener
- *
  * @author Szymon Szewczyk <s.szewczyk@roxway.pl>
  * @author jfbus <jf@closetome.fr>
  */
@@ -31,9 +30,9 @@ class Exceptions
     protected $ignore;
 
     /**
-     * @param Mailer $mailer
-     * @param StatsD $statsd
-     * @param        $ignore
+     * @param Mailer       $mailer
+     * @param StatsD       $statsd
+     * @param string|array $ignore
      */
     public function __construct($mailer, $statsd, $ignore)
     {
@@ -46,6 +45,7 @@ class Exceptions
      * Exception error handler
      *
      * @param  GetResponseForExceptionEvent $event
+     *
      * @return void
      */
     public function onKernelException(GetResponseForExceptionEvent $event)

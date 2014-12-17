@@ -9,24 +9,48 @@
  */
 
 namespace Socloz\MonitoringBundle\Profiler;
+use Socloz\MonitoringBundle\Profiler\Parser\ParserInterface;
 
 /**
  * Xhprof profiler
  */
 class Xhprof
 {
-    protected $profiling;
-
-    protected $mailer;
-    protected $statsd;
-
+    /**
+     * @var ParserInterface
+     */
     protected $parser;
+
+    /**
+     * @var Probe[]
+     */
     protected $probes;
+
+    /**
+     * @var
+     */
     protected $memory;
 
+    /**
+     * @var array
+     */
     protected $timers = array();
+
+    /**
+     * @var array
+     */
     protected $counters = array();
 
+    /**
+     * @var boolean
+     */
+    private $profiling;
+
+    /**
+     * @param string $parserClass
+     * @param Probe[] $probes
+     * @param $memory
+     */
     public function __construct($parserClass, $probes, $memory)
     {
         $this->parser = new $parserClass($probes);
