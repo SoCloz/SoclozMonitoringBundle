@@ -48,7 +48,7 @@ class SoclozMonitoringExtension extends Extension
         if (isset($config['profiler']['enable']) && $config['profiler']['enable']) {
             $probes = array();
             foreach ($config['profiler'] as $key => $value) {
-                if ($key === 'enable' || $key === 'sampling' || $key === 'request' || !$value) {
+                if (in_array($key, array('enable', 'sampling','request')) || !$value) {
                     continue;
                 }
                 $probes = array_merge($probes, $this->createProfilerProbes($key, $container));
