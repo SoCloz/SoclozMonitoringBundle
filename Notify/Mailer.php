@@ -17,8 +17,19 @@ class Mailer
      */
     protected $mailer;
 
+    /**
+     * @var EngineInterface
+     */
     protected $templating;
+
+    /**
+     * @var string
+     */
     protected $from;
+
+    /**
+     * @var string
+     */
     protected $to;
 
     /**

@@ -44,4 +44,8 @@ class StatsDMock extends StatsD
     {
         return $this->sent;
     }
+
+    public function getDoNotTrack() {
+        return $this->doNotTrack;
+    }
 }
