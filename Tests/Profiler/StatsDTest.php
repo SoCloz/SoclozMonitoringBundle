@@ -50,11 +50,11 @@ class StatsDTest extends \PHPUnit_Framework_TestCase
     public function testGauge()
     {
         $statsd = new StatsD('localhost', 42, 'prefix', false, true, self::PACKET_SIZE);
-        $statsd->gauge(array('counter1', 'country2'), 1);
+        $statsd->gauge(array('counter1', 'counter2'), 1);
         $statsd->flush();
         $sent = $statsd->getSent();
         $this->assertEquals(1, count($sent), "flush should send something");
-        $this->assertEquals("prefix.counter.Array:1|c", $sent[0], "flush should send both counters");
+        $this->assertEquals("prefix.counter1:1|c\nprefix.counter2:1|c", $sent[0], "flush should send both counters");
     }
 
     /**

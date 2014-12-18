@@ -21,7 +21,16 @@ class StatsDMock extends StatsD
 
     public function updateStats($stat, $delta = 1, $sampleRate = 1)
     {
-        parent::updateStats("counter.$stat", $delta, $sampleRate);
+        if (is_array($stat)) {
+            foreach ($stat as $k => $v)
+            {
+                $stat['counter.'.$k] = $v;
+                unset($stat[$k]);
+            }
+        } else {
+            $stat = 'counter.' . $stat;
+        }
+        parent::updateStats($stat, $delta, $sampleRate);
     }
 
     public function getStats()
