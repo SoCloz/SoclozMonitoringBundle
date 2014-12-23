@@ -2,7 +2,7 @@
 
 namespace Socloz\MonitoringBundle\Tests\Mocks;
 
-use Socloz\MonitoringBundle\Notify\StatsD;
+use Socloz\MonitoringBundle\Notify\StatsD\StatsD;
 
 /**
  * StatsD Mock

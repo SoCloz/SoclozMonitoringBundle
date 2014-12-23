@@ -11,12 +11,12 @@
 namespace Socloz\MonitoringBundle\Listener;
 
 use Socloz\MonitoringBundle\Notify\Logger;
-use Socloz\MonitoringBundle\Notify\StatsD;
+use Socloz\MonitoringBundle\Notify\StatsD\StatsDInterface;
 use Socloz\MonitoringBundle\Profiler\Xhprof;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * The profiler
@@ -30,7 +30,7 @@ class Profiler
     protected $profiler;
 
     /**
-     * @var StatsD
+     * @var StatsDInterface
      */
     protected $statsd;
 
@@ -50,12 +50,12 @@ class Profiler
     protected $profiling;
 
     /**
-     * @param Xhprof $profiler
-     * @param StatsD $statsd
-     * @param Logger $logger
-     * @param int    $sampling
+     * @param Xhprof          $profiler
+     * @param StatsDInterface $statsd
+     * @param Logger          $logger
+     * @param int             $sampling
      */
-    public function __construct(Xhprof $profiler, StatsD $statsd, Logger $logger = null, $sampling = 100)
+    public function __construct(Xhprof $profiler, StatsDInterface $statsd, Logger $logger = null, $sampling = 100)
     {
         $this->profiler = $profiler;
         $this->statsd = $statsd;
@@ -88,11 +88,11 @@ class Profiler
             if ($this->profiling) {
                 $timers = $this->profiler->getTimers();
                 $requestTime = microtime(true) - $this->start;
-                $timers['request'] = (int) ($requestTime*1000);
+                $timers['request'] = (int)($requestTime * 1000);
                 $counters = $this->profiler->getCounters();
                 $counters['request'] = 1;
                 if ($this->statsd) {
-                    $sample = $this->sampling/100;
+                    $sample = $this->sampling / 100;
                     $route = $event->getRequest()->attributes->get('_route');
                     foreach ($timers as $key => $value) {
                         $this->statsd->timing($key, $value, $sample);

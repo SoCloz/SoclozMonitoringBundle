@@ -1,19 +1,42 @@
 <?php
 
-namespace Socloz\MonitoringBundle\Notify;
+namespace Socloz\MonitoringBundle\Notify\StatsD;
 
 /**
  * StatsD client
  * inspired by https://github.com/etsy/statsd/blob/master/examples/php-example.php
  * @author etsy, Jean-François Bustarret
  */
-class StatsD
+class StatsD implements StatsDInterface
 {
+    /**
+     * @var string
+     */
     protected $host;
+
+    /**
+     * @var int
+     */
     protected $port;
+
+    /**
+     * @var string
+     */
     protected $prefix;
+
+    /**
+     * @var bool
+     */
     protected $alwaysFlush;
+
+    /**
+     * @var bool
+     */
     protected $mergePackets;
+
+    /**
+     * @var int
+     */
     protected $packetSize;
 
     /**

@@ -3,7 +3,7 @@
 namespace Socloz\MonitoringBundle\Listener;
 
 use Socloz\MonitoringBundle\Notify\Mailer;
-use Socloz\MonitoringBundle\Notify\StatsD;
+use Socloz\MonitoringBundle\Notify\StatsD\StatsDInterface;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 
@@ -20,7 +20,7 @@ class Exceptions
     protected $mailer;
 
     /**
-     * @var StatsD
+     * @var StatsDInterface
      */
     protected $statsd;
 
@@ -30,11 +30,11 @@ class Exceptions
     protected $ignore;
 
     /**
-     * @param Mailer       $mailer
-     * @param StatsD       $statsd
-     * @param string|array $ignore
+     * @param Mailer          $mailer
+     * @param StatsDInterface $statsd
+     * @param string|array    $ignore
      */
-    public function __construct($mailer, $statsd, $ignore)
+    public function __construct($mailer, StatsDInterface $statsd, $ignore)
     {
         $this->mailer = $mailer;
         $this->statsd = $statsd;
