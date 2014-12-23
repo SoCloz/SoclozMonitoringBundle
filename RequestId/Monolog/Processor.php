@@ -20,6 +20,10 @@ class Processor
     protected $requestId;
     protected $addPid;
 
+    /**
+     * @param RequestId $requestId
+     * @param           $addPid
+     */
     public function __construct(RequestId $requestId, $addPid)
     {
         $this->requestId = $requestId;
@@ -29,7 +33,7 @@ class Processor
     /**
      * Adds request_id & pid to log line
      *
-     * @param array $record
+     * @param  array $record
      * @return array
      */
     public function __invoke(array $record)
@@ -38,7 +42,7 @@ class Processor
         if ($this->addPid) {
             $record['extra']['pid'] = $this->requestId->getPid();
         }
+
         return $record;
     }
-
 }

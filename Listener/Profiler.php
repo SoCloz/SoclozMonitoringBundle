@@ -10,14 +10,13 @@
 
 namespace Socloz\MonitoringBundle\Listener;
 
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Socloz\MonitoringBundle\Notify\Logger;
+use Socloz\MonitoringBundle\Notify\StatsD\StatsDInterface;
+use Socloz\MonitoringBundle\Profiler\Xhprof;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * The profiler
@@ -25,14 +24,38 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
  */
 class Profiler
 {
+    /**
+     * @var Xhprof
+     */
     protected $profiler;
+
+    /**
+     * @var StatsDInterface
+     */
     protected $statsd;
+
+    /**
+     * @var int
+     */
     protected $sampling;
 
+    /**
+     * @var int
+     */
     protected $start;
+
+    /**
+     * @var boolean
+     */
     protected $profiling;
 
-    public function __construct($profiler, $statsd, $logger, $sampling)
+    /**
+     * @param Xhprof          $profiler
+     * @param StatsDInterface $statsd
+     * @param Logger          $logger
+     * @param int             $sampling
+     */
+    public function __construct(Xhprof $profiler, StatsDInterface $statsd, Logger $logger = null, $sampling = 100)
     {
         $this->profiler = $profiler;
         $this->statsd = $statsd;
@@ -40,6 +63,9 @@ class Profiler
         $this->sampling = $sampling;
     }
 
+    /**
+     * @param GetResponseEvent $event
+     */
     public function onCoreRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
@@ -52,6 +78,9 @@ class Profiler
         }
     }
 
+    /**
+     * @param FilterResponseEvent $event
+     */
     public function onCoreResponse(FilterResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
@@ -59,11 +88,11 @@ class Profiler
             if ($this->profiling) {
                 $timers = $this->profiler->getTimers();
                 $requestTime = microtime(true) - $this->start;
-                $timers['request'] = (int) ($requestTime*1000);
+                $timers['request'] = (int)($requestTime * 1000);
                 $counters = $this->profiler->getCounters();
                 $counters['request'] = 1;
                 if ($this->statsd) {
-                    $sample = $this->sampling/100;
+                    $sample = $this->sampling / 100;
                     $route = $event->getRequest()->attributes->get('_route');
                     foreach ($timers as $key => $value) {
                         $this->statsd->timing($key, $value, $sample);

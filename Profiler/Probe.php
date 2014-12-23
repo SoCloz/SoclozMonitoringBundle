@@ -15,19 +15,45 @@ namespace Socloz\MonitoringBundle\Profiler;
  */
 class Probe
 {
-    
     const TRACKER_TIMING = 1;
     const TRACKER_CALLS = 2;
-    
+
+    /**
+     * @var string
+     */
     protected $name;
+
+    /**
+     * @var int
+     */
     protected $tracker;
+
+    /**
+     * @var string
+     */
     protected $type;
+
+    /**
+     * @var array
+     */
     protected $calls;
-    
+
+    /**
+     * @var int
+     */
     protected $time = 0;
+
+    /**
+     * @var int
+     */
     protected $count = 0;
 
-    public function __construct($name, $tracker, $definition)
+    /**
+     * @param string $name
+     * @param int $tracker
+     * @param array  $definition
+     */
+    public function __construct($name, $tracker, array $definition = array())
     {
         $this->name = $name;
         $this->tracker = $tracker;
@@ -35,22 +61,28 @@ class Probe
         $this->calls = isset($definition['calls']) ? $definition['calls'] : array();
     }
 
+    /**
+     * @return int
+     */
     public function isTimingProbe()
     {
         return $this->tracker&self::TRACKER_TIMING;
     }
-    
+
+    /**
+     * @return int
+     */
     public function isCallsProbe()
     {
         return $this->tracker&self::TRACKER_CALLS;
     }
-    
+
     /**
      * Adds timing/count data
-     * 
-     * @param array $callData 
+     *
+     * @param array $callData
      */
-    public function addCallData($callData)
+    public function addCallData(array $callData)
     {
         if ($this->isTimingProbe()) {
             $this->time += (int) $callData['wt']/1000; // ms
@@ -59,49 +91,51 @@ class Probe
             $this->count += $callData['ct'];
         }
     }
-    
+
     /**
      * Get total wall time for current parser
-     * 
-     * @return int 
+     *
+     * @return int
      */
     public function getTime()
     {
         return $this->time;
     }
-    
+
     /**
      * Get total number of calls for current parser
-     * 
-     * @return int 
+     *
+     * @return int
      */
-    public function getCount() {
+    public function getCount()
+    {
         return $this->count;
     }
-    
+
     /**
      * Get the parser name
-     * 
-     * @return string 
+     *
+     * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
-    
+
     /**
      * Get the probe type
-     * 
+     *
      * @return string
      */
     public function getType()
     {
         return $this->type;
     }
-    
+
     /**
      * Get the probe type
-     * 
-     * @return string
+     *
+     * @return array
      */
     public function getCalls()
     {

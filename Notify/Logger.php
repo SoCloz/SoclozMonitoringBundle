@@ -10,6 +10,7 @@
 
 namespace Socloz\MonitoringBundle\Notify;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -17,15 +18,24 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class Logger
 {
-    
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
 
-    public function __construct($logger)
+    /**
+     * @param LoggerInterface $logger
+     */
+    public function __construct(LoggerInterface $logger = null)
     {
         $this->logger = $logger;
-        
     }
-    
+
+    /**
+     * @param Request $request
+     * @param array   $timing
+     * @param array   $calls
+     */
     public function log(Request $request = null, array $timing, array $calls)
     {
         $msg = sprintf("%s : %d ms", ($request ? $request->getRequestUri() : "-"), $timing['request']);
@@ -36,5 +46,4 @@ class Logger
         }
         $this->logger->info($msg);
     }
-
 }

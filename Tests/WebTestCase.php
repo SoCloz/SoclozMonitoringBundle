@@ -3,12 +3,10 @@
 namespace Socloz\MonitoringBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
-
 use Socloz\MonitoringBundle\Tests\Fixtures\TestKernel;
 
 abstract class WebTestCase extends BaseWebTestCase
 {
-
     protected function getContainer(array $options = array())
     {
         if (!static::$kernel) {

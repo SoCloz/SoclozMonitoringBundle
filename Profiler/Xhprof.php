@@ -10,31 +10,57 @@
 
 namespace Socloz\MonitoringBundle\Profiler;
 
+use Socloz\MonitoringBundle\Profiler\Parser\ParserInterface;
+
 /**
  * Xhprof profiler
  */
-class Xhprof {
-
-    protected $profiling;
-    
-    protected $mailer;
-    protected $statsd;
-    
+class Xhprof
+{
+    /**
+     * @var ParserInterface
+     */
     protected $parser;
+
+    /**
+     * @var Probe[]
+     */
     protected $probes;
+
+    /**
+     * @var
+     */
     protected $memory;
-    
+
+    /**
+     * @var array
+     */
     protected $timers = array();
+
+    /**
+     * @var array
+     */
     protected $counters = array();
-    
-    public function __construct($parserClass, $probes, $memory) {
+
+    /**
+     * @var boolean
+     */
+    private $profiling;
+
+    /**
+     * @param string  $parserClass
+     * @param Probe[] $probes
+     * @param $memory
+     */
+    public function __construct($parserClass, $probes, $memory)
+    {
         $this->parser = new $parserClass($probes);
         $this->probes = $probes;
         $this->memory = $memory;
     }
-    
+
     /**
-     * Starts the profiling 
+     * Starts the profiling
      */
     public function startProfiling()
     {
@@ -72,25 +98,27 @@ class Xhprof {
                 $this->counters[$name] = $probe->getCount();
             }
         }
-        
+
         return true;
     }
 
     /**
      * Returns the list of timers
-     * 
-     * @return array 
+     *
+     * @return array
      */
-    public function getTimers() {
+    public function getTimers()
+    {
         return $this->timers;
     }
-    
+
     /**
      * Returns the list of counters
-     * 
-     * @return array 
+     *
+     * @return array
      */
-    public function getCounters() {
+    public function getCounters()
+    {
         return $this->counters;
     }
 }

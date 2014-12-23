@@ -10,10 +10,10 @@
 
 namespace Socloz\MonitoringBundle\Listener;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-
 use Socloz\MonitoringBundle\RequestId\RequestId as RequestIdService;
 
 /**
@@ -21,15 +21,29 @@ use Socloz\MonitoringBundle\RequestId\RequestId as RequestIdService;
  */
 class RequestId
 {
+    /**
+     * @var RequestIdService
+     */
     protected $requestId;
+
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
 
-    public function __construct(RequestIdService $requestId, $logger)
+    /**
+     * @param RequestIdService $requestId
+     * @param LoggerInterface  $logger
+     */
+    public function __construct(RequestIdService $requestId, LoggerInterface $logger = null)
     {
         $this->requestId = $requestId;
         $this->logger = $logger;
     }
 
+    /**
+     * @param GetResponseEvent $event
+     */
     public function onCoreRequest(GetResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {
@@ -44,6 +58,9 @@ class RequestId
         }
     }
 
+    /**
+     * @param FilterResponseEvent $event
+     */
     public function onCoreResponse(FilterResponseEvent $event)
     {
         if (HttpKernelInterface::MASTER_REQUEST === $event->getRequestType()) {

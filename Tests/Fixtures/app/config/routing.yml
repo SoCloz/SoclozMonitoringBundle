@@ -1,7 +1,7 @@
 test_controller_exception:
   pattern: /socloz_monitoring/exception/{class}
   defaults: { _controller: SoclozMonitoringTestBundle:Test:generateException }
-  
+
 test_controller_timing:
   pattern: /socloz_monitoring/timing/{time}
   defaults: { _controller: SoclozMonitoringTestBundle:Test:timing }

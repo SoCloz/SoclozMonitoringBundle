@@ -15,12 +15,12 @@
 
 <h3>Stack trace:</h3>
 {% for trace in exception.trace %}
-    #{{ loop.index0 }} - 
+    #{{ loop.index0 }} -
         {% if trace.class is defined %}
             {{ trace.class }}{{ trace.type }}{{ trace.function }}()
         {% else %}
             {{ trace.function }}()
-        {% endif %} 
+        {% endif %}
         {% if trace.file is defined %}
             in {{ trace.file }} line {{ trace.line }}
         {% endif %}
@@ -30,12 +30,12 @@
 {% if exception.previous %}
     <h4>Previous exception: {{ '"' ~ exception.previous.message ~ '": ' ~ exception.previous.file ~ ':' ~ exception.previous.line }}</h4>
     {% for trace in exception.previous.trace %}
-        #{{ loop.index0 }} - 
+        #{{ loop.index0 }} -
             {% if trace.class is defined %}
                 {{ trace.class }}{{ trace.type }}{{ trace.function }}()
             {% else %}
                 {{ trace.function }}()
-            {% endif %} 
+            {% endif %}
             {% if trace.file is defined %}
                 in {{ trace.file }} line {{ trace.line }}
             {% endif %}

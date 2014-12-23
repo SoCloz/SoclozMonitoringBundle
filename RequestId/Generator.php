@@ -15,7 +15,9 @@ namespace Socloz\MonitoringBundle\RequestId;
  */
 class Generator
 {
-
+    /**
+     * @return string
+     */
     public function getRequestId()
     {
         return md5(uniqid(rand()));

@@ -10,17 +10,25 @@
 
 namespace Socloz\MonitoringBundle\RequestId;
 
-use Socloz\MonitoringBundle\RequestId\Adapters\AdapterInterface;
-
 /**
  * RequestId service
  */
 class RequestId
 {
-
+    /**
+     * @var string
+     */
     protected $requestId;
+
+    /**
+     * @var int
+     */
     protected $pid;
 
+    /**
+     * @param Generator $generator
+     * @param           $addPid
+     */
     public function __construct(Generator $generator, $addPid)
     {
         $this->requestId = $generator->getRequestId();
@@ -29,16 +37,25 @@ class RequestId
         }
     }
 
+    /**
+     * @return string
+     */
     public function getRequestId()
     {
         return $this->requestId;
     }
 
+    /**
+     * @param string $requestId
+     */
     public function setRequestId($requestId)
     {
         $this->requestId = $requestId;
     }
 
+    /**
+     * @return int
+     */
     public function getPid()
     {
         return $this->pid;

@@ -9,6 +9,7 @@
  */
 
 namespace Socloz\MonitoringBundle\DependencyInjection;
+
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
@@ -16,7 +17,6 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * Loads all request_id adapters
  */
-
 class AdapterCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
@@ -29,7 +29,7 @@ class AdapterCompilerPass implements CompilerPassInterface
             $definition->addMethodCall(
                 'addGlobalPlugin',
                 array(
-                    new Reference("socloz_monitoring.request_id.adapter.guzzle")
+                    new Reference("socloz_monitoring.request_id.adapter.guzzle"),
                 )
             );
         }

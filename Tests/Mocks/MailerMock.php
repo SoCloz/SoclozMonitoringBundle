@@ -7,18 +7,21 @@ namespace Socloz\MonitoringBundle\Tests\Mocks;
  *
  * @author jfb
  */
-class MailerMock {
-
+class MailerMock
+{
     protected $exceptions = array();
-    
-    public function __construct($mailer, $templating, $from, $to, $enabled) {
+
+    public function __construct($mailer, $templating, $from, $to, $enabled)
+    {
     }
 
-    public function sendException($request, $exception) {
+    public function sendException($request, $exception)
+    {
         $this->exceptions[] = $exception;
     }
-    
-    public function getExceptions() {
+
+    public function getExceptions()
+    {
         return $this->exceptions;
     }
 }

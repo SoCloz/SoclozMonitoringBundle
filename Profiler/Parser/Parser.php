@@ -8,25 +8,38 @@
  * file that was distributed with this source code.
  */
 
-namespace Socloz\MonitoringBundle\Profiler;
+namespace Socloz\MonitoringBundle\Profiler\Parser;
+
+use Socloz\MonitoringBundle\Profiler\Probe;
 
 /**
  * A XHprof data parser
  */
-class Parser
+class Parser implements ParserInterface
 {
-    
     protected $name;
+
     protected $type;
+
+    /**
+     * @var array
+     */
     protected $calls;
-    
+
+    /**
+     * @var int
+     */
     protected $time = 0;
+
+    /**
+     * @var int
+     */
     protected $count = 0;
 
     /**
      * Initializes probes
-     * 
-     * @param array $probes
+     *
+     * @param Probe[] $probes
      */
     public function __construct($probes)
     {
@@ -41,8 +54,6 @@ class Parser
     }
 
     /**
-     * Parses Xhprof data
-     * 
      * @param array $xhprof_data
      */
     public function parse($xhprof_data)
@@ -66,11 +77,15 @@ class Parser
             }
         }
     }
-    
+
+    /**
+     * @param Probe[] $probes
+     * @param array   $callData
+     */
     public function addCallData($probes, $callData)
     {
         foreach ($probes as $probe) {
             $probe->addCallData($callData);
         }
-    } 
+    }
 }

@@ -23,6 +23,7 @@
         <whitelist>
             <directory>.</directory>
             <exclude>
+                <directory>Tests</directory>
                 <directory>Resources</directory>
                 <directory>Fixtures</directory>
                 <directory>Mocks</directory>
