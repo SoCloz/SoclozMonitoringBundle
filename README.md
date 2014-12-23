@@ -6,7 +6,10 @@ SoclozMonitoringBundle
 Warning
 -------
 
-**First stable version was released, you should use 1.0.0 version, if you want not change your code.**
+** First stable version was released, you should use 1.0.0 version, if you want not change your code, else see [CHANGELOG.md](CHANGELOG.md) to know what has changed**
+
+Introduction
+------------
 
 A monitoring Symfony2 bundle for production servers that :
 
