@@ -6,7 +6,7 @@ SoclozMonitoringBundle
 Warning
 -------
 
-**First stable version was released, you should use 1.0.0 version, if you want not change your code, else see [CHANGELOG.md](CHANGELOG.md) to know what has changed**
+**First stable version was released and tagged, if you don't want to change anything, you should use version 1.0.0, otherwise see [CHANGELOG.md](CHANGELOG.md) to see what has changed**
 
 Introduction
 ------------
