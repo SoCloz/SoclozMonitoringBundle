@@ -11,7 +11,7 @@ class MailerMock
 {
     protected $exceptions = array();
 
-    public function __construct($mailer, $templating, $from, $to, $enabled)
+    public function __construct($mailer, $templating, $logger, $from, $to, $enabled)
     {
     }
 

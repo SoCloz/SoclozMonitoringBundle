@@ -12,6 +12,7 @@
         <service id="socloz_monitoring.mailer" class="%socloz_monitoring.mailer.class%" >
             <argument type="service" id="mailer" on-invalid="null" />
             <argument type="service" id="templating" on-invalid="null" />
+            <argument type="service" id="logger" on-invalid="null" />
             <argument>%socloz_monitoring.mailer.from%</argument>
             <argument>%socloz_monitoring.mailer.to%</argument>
             <argument>%socloz_monitoring.mailer.enable%</argument>

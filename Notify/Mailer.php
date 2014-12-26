@@ -2,6 +2,7 @@
 
 namespace Socloz\MonitoringBundle\Notify;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Templating\EngineInterface;
 
@@ -35,17 +36,19 @@ class Mailer
     /**
      * @param \Swift_Mailer   $mailer
      * @param EngineInterface $templating
+     * @param LoggerInterface $logger
      * @param string          $from
      * @param string          $to
      * @param boolean         $enabled
      */
-    public function __construct(\Swift_Mailer $mailer, EngineInterface $templating, $from, $to, $enabled)
+    public function __construct(\Swift_Mailer $mailer, EngineInterface $templating, LoggerInterface $logger, $from, $to, $enabled)
     {
         $this->mailer = $mailer;
         $this->templating = $templating;
         $this->from = $from;
         $this->to = $to;
         $this->enabled = $enabled;
+        $this->logger = $logger;
     }
 
     /**
@@ -89,7 +92,7 @@ class Mailer
         try {
             $this->getMailer()->send($message);
         } catch (\Exception $e) {
-            $this->getContainer()->get('logger')->err('Sending mail error - '.$e->getMessage());
+            $this->logger->error('Sending mail error - '.$e->getMessage());
         }
     }
 }
