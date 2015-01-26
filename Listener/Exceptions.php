@@ -34,7 +34,7 @@ class Exceptions
      * @param StatsDInterface $statsd
      * @param string|array    $ignore
      */
-    public function __construct($mailer, StatsDInterface $statsd, $ignore)
+    public function __construct($mailer, StatsDInterface $statsd = null, $ignore = array())
     {
         $this->mailer = $mailer;
         $this->statsd = $statsd;
