@@ -50,14 +50,30 @@ class Exceptions
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        $class = get_class($event->getException());
-        if (!in_array($class, $this->ignore)) {
-            if ($this->mailer) {
-                $this->mailer->sendException($event->getRequest(), $event->getException());
-            }
-            if ($this->statsd) {
-                $this->statsd->increment("exception");
+        if ($this->isIgnored($event->getException())) {
+            return;
+        }
+
+        if ($this->mailer) {
+            $this->mailer->sendException($event->getRequest(), $event->getException());
+        }
+        if ($this->statsd) {
+            $this->statsd->increment("exception");
+        }
+    }
+
+    /**
+     * @param object $object
+     *
+     * @return bool
+     */
+    private function isIgnored($object)
+    {
+        foreach ($this->ignore as $ignore) {
+            if ($object instanceof $ignore) {
+                return true;
             }
         }
+        return false;
     }
 }
