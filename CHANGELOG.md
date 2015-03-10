@@ -2,7 +2,7 @@
 
 ## 1.2.0
 
-- Use inheritance on ExceptionListener [#13]
+- Use inheritance on ExceptionListener [#13](../../issues/13)
 
 ## 1.1.0: Cleaning
 
