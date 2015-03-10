@@ -1,5 +1,9 @@
 #Changelog
 
+## 1.2.0
+
+- Use inheritance on ExceptionListener [#13]
+
 ## 1.1.0: Cleaning
 
 - PHPDoc

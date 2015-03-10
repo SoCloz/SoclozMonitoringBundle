@@ -28,4 +28,34 @@ class ExceptionsTest extends WebTestCase
         $stats = $statsd->getStats();
         $this->assertEquals("1|c", $stats['counter.exception']);
     }
+
+    public function testIgnoredException()
+    {
+        $client = $this->createClient();
+        $statsd = $this->getContainer()->get('socloz_monitoring.statsd');
+        $exceptionListener = $this->getContainer()->get('socloz_monitoring.listener.exceptions');
+
+        $ref = new \ReflectionClass('\Socloz\MonitoringBundle\Listener\Exceptions');
+        $refProp = $ref->getProperty('ignore');
+        $refProp->setAccessible(true);
+        $refProp->setValue($exceptionListener, array('\Exception'));
+
+        $e = null;
+        try {
+            $client->request('GET', '/socloz_monitoring/exception/Exception');
+        } catch (\Exception $e) {
+        }
+
+        $stats = $statsd->getStats();
+        $this->assertEquals(false, isset($stats['counter.exception']));
+
+        $e = null;
+        try {
+            $client->request('GET', '/socloz_monitoring/exception/Socloz__MonitoringBundle__Tests__Fixtures__Exception__ExceptionChild');
+        } catch (\Exception $e) {
+        }
+
+        $stats = $statsd->getStats();
+        $this->assertEquals(false, isset($stats['counter.exception']));
+    }
 }
