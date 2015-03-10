@@ -6,6 +6,6 @@ php:
 
 before_script:
   - pecl -q install xhprof-beta && echo "extension=xhprof.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
-  - composer update --prefer-source --dev
+  - composer update --prefer-source
 
 script: phpunit
