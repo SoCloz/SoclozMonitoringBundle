@@ -1,15 +1,16 @@
 test_controller_exception:
-  pattern: /socloz_monitoring/exception/{class}
-  defaults: { _controller: SoclozMonitoringTestBundle:Test:generateException }
-
-test_controller_timing:
-  pattern: /socloz_monitoring/timing/{time}
-  defaults: { _controller: SoclozMonitoringTestBundle:Test:timing }
-
+  defaults:
+    _controller: "SoclozMonitoringTestBundle:Test:generateException"
+  path: "/socloz_monitoring/exception/{class}"
 test_controller_preg:
-  pattern: /socloz_monitoring/preg/{count}
-  defaults: { _controller: SoclozMonitoringTestBundle:Test:preg }
-
+  defaults:
+    _controller: "SoclozMonitoringTestBundle:Test:preg"
+  path: "/socloz_monitoring/preg/{count}"
 test_controller_request_id:
-  pattern: /socloz_monitoring/request_id
-  defaults: { _controller: SoclozMonitoringTestBundle:Test:requestId }
+  defaults:
+    _controller: "SoclozMonitoringTestBundle:Test:requestId"
+  path: /socloz_monitoring/request_id
+test_controller_timing:
+  defaults:
+    _controller: "SoclozMonitoringTestBundle:Test:timing"
+  path: "/socloz_monitoring/timing/{time}"

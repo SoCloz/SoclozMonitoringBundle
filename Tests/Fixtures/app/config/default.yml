@@ -13,7 +13,8 @@ socloz_monitoring:
   profiler:
     enable: true
     request: true
-    calls: ["Socloz\MonitoringBundle\Tests\Fixtures\Controller\TestController::doSomething"]
+    calls:
+      - "Socloz\\MonitoringBundle\\Tests\\Fixtures\\Controller\\TestController::doSomething"
   mailer:
     enable: true
     from: email@example.com
