@@ -28,7 +28,6 @@ matrix:
       env: SYMFONY_VERSION=3.0.*
   allow_failures:
     - php: 7.0
-    - env: SYMFONY_VERSION=3.0.*
 
 before_script:
   - pecl -q install xhprof-beta && echo "extension=xhprof.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
