@@ -6,13 +6,17 @@
 
     <parameters>
         <parameter key="socloz_monitoring.mailer.class">Socloz\MonitoringBundle\Notify\Mailer</parameter>
+        <parameter key="socloz_monitoring.mailer_transformer.class">Socloz\MonitoringBundle\Transformer\MailerTransformer</parameter>
     </parameters>
     
     <services>
+        <service id="socloz_monitoring.mailer_transformer" class="%socloz_monitoring.mailer_transformer.class%" >
+        </service>
         <service id="socloz_monitoring.mailer" class="%socloz_monitoring.mailer.class%" >
             <argument type="service" id="mailer" on-invalid="null" />
             <argument type="service" id="templating" on-invalid="null" />
             <argument type="service" id="logger" on-invalid="null" />
+            <argument type="service" id="socloz_monitoring.mailer_transformer" />
             <argument>%socloz_monitoring.mailer.from%</argument>
             <argument>%socloz_monitoring.mailer.to%</argument>
             <argument>%socloz_monitoring.mailer.enable%</argument>

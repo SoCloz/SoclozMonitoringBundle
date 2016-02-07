@@ -1,3 +1,31 @@
+{% macro renderIterable(var) %}
+    <table border="1">
+        {% for param, value in var if value is not empty %}
+            <tr>
+                <td>{{ param }}</td>
+                <td>{{ value is iterable ? value|json_encode : value }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endmacro %}
+
+{% macro renderValue(var) %}
+    {% if var is iterable %}
+        {% for key, value in var if value is not empty %}
+            <strong>{{ key }}</strong>:
+            {% if value is iterable %}
+                {{ _self.renderIterable(value) }}
+            {% else %}
+                {{ value }}
+                <br />
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        {{ var }}
+        <br />
+    {% endif %}
+{% endmacro %}
+
 <h2>{{ exception_class }} : {{ exception.message }}</h2>
 
 <h3>Information:</h3>
@@ -7,23 +35,8 @@
 <strong>Uri: </strong> {{ request.uri }} <br />
 
 {% if request_attributes %}
-<h3>Request Attributes:</h3>
-{% for key, header in request_attributes %}
-    <strong>{{ key }}</strong>:
-    {% if header is iterable %}
-        <table border="1">
-        {% for param, value in header %}
-            <tr>
-                <td>{{ param }}</td>
-                <td>{{ value}}</td>
-            </tr>
-        {% endfor %}
-        </table>
-    {% else %}
-        {{ header }}
-    {% endif %}
-    <br />
-{% endfor %}
+    <h3>Request Attributes:</h3>
+    {{ _self.renderValue(request_attributes) }}
 {% endif %}
 
 <h3>Stack trace:</h3>
@@ -57,11 +70,7 @@
 {% endif %}
 
 <h3>Request Headers:</h3>
-{% for key, header in request_headers %}
-    <strong>{{ key }}</strong>: {{ header }}<br />
-{% endfor %}
+{{ _self.renderValue(request_headers) }}
 
 <h3>Request Server Parameters:</h3>
-{% for key, header in server_params %}
-    <strong>{{ key }}</strong>: {{ header }}<br />
-{% endfor %}
+{{ _self.renderValue(server_params) }}
