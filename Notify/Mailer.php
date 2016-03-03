@@ -79,6 +79,11 @@ class Mailer
             return;
         }
 
+        $serverParams = $request->server->all();
+        if (isset($serverParams['PHP_AUTH_PW'])) {
+            $serverParams['PHP_AUTH_PW'] = '*****';
+        }
+
         $message = \Swift_Message::newInstance()
             ->setSubject('Error message from '.$request->getHost().' - '.$exception->getMessage())
             ->setFrom($this->from)
@@ -92,7 +97,7 @@ class Mailer
                         'exception_class' => \get_class($exception),
                         'request_headers' => $request->server->getHeaders(),
                         'request_attributes' => $this->mailerTransformer->transform($request->attributes->all()),
-                        'server_params' => $this->mailerTransformer->transform($request->server->all()),
+                        'server_params' => $this->mailerTransformer->transform($serverParams),
                     )
                 )
             );
