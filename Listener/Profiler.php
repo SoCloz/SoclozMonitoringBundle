@@ -55,7 +55,7 @@ class Profiler
      * @param Logger          $logger
      * @param int             $sampling
      */
-    public function __construct(Xhprof $profiler, StatsDInterface $statsd, Logger $logger = null, $sampling = 100)
+    public function __construct(Xhprof $profiler, StatsDInterface $statsd = null, Logger $logger = null, $sampling = 100)
     {
         $this->profiler = $profiler;
         $this->statsd = $statsd;
