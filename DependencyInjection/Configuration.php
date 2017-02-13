@@ -50,6 +50,7 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('enable')->defaultValue(true)->end()
+                        ->scalarNode('message_factory')->defaultValue('socloz_monitoring.default_message_factory')->end()
                         ->scalarNode('from')->end()
                         ->scalarNode('to')->end()
                     ->end()

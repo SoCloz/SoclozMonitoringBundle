@@ -33,6 +33,9 @@ before_script:
   - pecl -q install xhprof-beta && echo "extension=xhprof.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - composer selfupdate
   - if [ "$SYMFONY_VERSION" != "" ]; then composer require "symfony/symfony:${SYMFONY_VERSION}" --no-update; fi;
+  - if [[ "$TRAVIS_PHP_VERSION" == "5.5" && "$SYMFONY_VERSION" == "" ]]; then composer require "symfony/asset" --no-update; fi;
+  - if [[ "$TRAVIS_PHP_VERSION" == "5.6" && "$SYMFONY_VERSION" == "" ]]; then composer require "symfony/asset" --no-update; fi;
+  - if [[ "$TRAVIS_PHP_VERSION" = 7.* && "$SYMFONY_VERSION" == "" ]]; then composer require "symfony/asset" --no-update; fi;
   - composer update --prefer-source --no-interaction $COMPOSER_FLAGS
 
 script: ./vendor/bin/phpunit

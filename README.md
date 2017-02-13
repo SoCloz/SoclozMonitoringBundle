@@ -133,6 +133,7 @@ socloz_monitoring:
         sphinx: false
     mailer:
         enable: true
+        message_factory: socloz_monitoring.default_message_factory
         from: 
         to: 
     statsd:

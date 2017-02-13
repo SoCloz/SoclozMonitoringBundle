@@ -3,9 +3,8 @@
 namespace Socloz\MonitoringBundle\Notify;
 
 use Psr\Log\LoggerInterface;
-use Socloz\MonitoringBundle\Transformer\MailerTransformer;
+use Socloz\MonitoringBundle\Notify\Message\MessageFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Templating\EngineInterface;
 
 /**
  * Error notification mailer
@@ -20,14 +19,9 @@ class Mailer
     protected $mailer;
 
     /**
-     * @var EngineInterface
+     * @var MessageFactoryInterface
      */
-    protected $templating;
-
-    /**
-     * @var MailerTransformer
-     */
-    protected $mailerTransformer;
+    protected $messageFactory;
 
     /**
      * @var string
@@ -40,23 +34,21 @@ class Mailer
     protected $to;
 
     /**
-     * @param \Swift_Mailer     $mailer
-     * @param EngineInterface   $templating
-     * @param LoggerInterface   $logger
-     * @param MailerTransformer $requestTransformer
-     * @param string            $from
-     * @param string            $to
-     * @param boolean           $enabled
+     * @param \Swift_Mailer           $mailer
+     * @param MessageFactoryInterface $messageFactory
+     * @param LoggerInterface         $logger
+     * @param string                  $from
+     * @param string                  $to
+     * @param boolean                 $enabled
      */
-    public function __construct(\Swift_Mailer $mailer, EngineInterface $templating, LoggerInterface $logger, MailerTransformer $requestTransformer, $from, $to, $enabled)
+    public function __construct(\Swift_Mailer $mailer, MessageFactoryInterface $messageFactory, LoggerInterface $logger, $from, $to, $enabled)
     {
         $this->mailer = $mailer;
-        $this->templating = $templating;
+        $this->messageFactory = $messageFactory;
         $this->from = $from;
         $this->to = $to;
         $this->enabled = $enabled;
         $this->logger = $logger;
-        $this->mailerTransformer = $requestTransformer;
     }
 
     /**
@@ -79,28 +71,13 @@ class Mailer
             return;
         }
 
-        $serverParams = $request->server->all();
-        if (isset($serverParams['PHP_AUTH_PW'])) {
-            $serverParams['PHP_AUTH_PW'] = '*****';
-        }
-
+        $messageContent = $this->messageFactory->create($request, $exception);
         $message = \Swift_Message::newInstance()
-            ->setSubject('Error message from '.$request->getHost().' - '.$exception->getMessage())
+            ->setSubject($messageContent->getSubject())
             ->setFrom($this->from)
             ->setTo($this->to)
-            ->setContentType('text/html')
-            ->setBody(
-                $this->templating->render(
-                    "SoclozMonitoringBundle:Notify:exception.html.twig", array(
-                        'request' => $request,
-                        'exception' => $exception,
-                        'exception_class' => \get_class($exception),
-                        'request_headers' => $request->server->getHeaders(),
-                        'request_attributes' => $this->mailerTransformer->transform($request->attributes->all()),
-                        'server_params' => $this->mailerTransformer->transform($serverParams),
-                    )
-                )
-            );
+            ->setContentType($messageContent->getContentType())
+            ->setBody($messageContent->getContent());
 
         try {
             $this->getMailer()->send($message);
