@@ -56,6 +56,10 @@ class SoclozMonitoringExtension extends Extension
             $container->getDefinition('socloz_monitoring.profiler')
                 ->replaceArgument(1, $probes);
         }
+
+        if (isset($config['mailer']['enable']) && $config['mailer']['enable']) {
+            $container->setAlias('socloz_monitoring.message_factory', $config['mailer']['message_factory']);
+        }
     }
 
     /**

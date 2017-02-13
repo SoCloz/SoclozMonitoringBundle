@@ -11,6 +11,7 @@ class TestKernel extends Kernel
     {
         return array(
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new \Symfony\Bundle\TwigBundle\TwigBundle(),
             new \Socloz\MonitoringBundle\SoclozMonitoringBundle(),
             new \Socloz\MonitoringBundle\Tests\Fixtures\SoclozMonitoringTestBundle(),
         );

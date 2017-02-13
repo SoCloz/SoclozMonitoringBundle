@@ -18,9 +18,10 @@ class ExceptionsTest extends WebTestCase
         $e = null;
         try {
             $client->request('GET', '/socloz_monitoring/exception/Exception');
+            $this->assertTrue(false, "Exception not throw");
         } catch (\Exception $e) {
         }
-        $this->assertNotNull($e);
+        
         $exceptions = $mailer->getExceptions();
         $this->assertEquals(1, count($exceptions));
         $this->assertEquals("Generated exception", $exceptions[0]->getMessage());

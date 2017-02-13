@@ -1,7 +1,11 @@
 framework:
   router: { resource: "%kernel.root_dir%/config/routing.yml" }
   secret: mysecret
+  templating:
+    engines: ['twig']
   test: ~
+  translator:
+    enabled: false
 
 parameters:
   socloz_monitoring.mailer.class: Socloz\MonitoringBundle\Tests\Mocks\MailerMock
