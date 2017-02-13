@@ -30,6 +30,8 @@ class SoclozMonitoringExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $this->registerProfilerClass($container);
+
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
         foreach ($config as $key => $subConfig) {
@@ -87,6 +89,20 @@ class SoclozMonitoringExtension extends Extension
                     $container
                 ),
             );
+        }
+    }
+
+    /**
+     * Register profiler class to use
+     *
+     * @param ContainerBuilder $container
+     */
+    private function registerProfilerClass(ContainerBuilder $container)
+    {
+        if (function_exists('tideways_enable')) {
+            $container->setParameter('socloz_monitoring.profiler.class', 'Socloz\MonitoringBundle\Profiler\Tideways');
+        } else {
+            $container->setParameter('socloz_monitoring.profiler.class', 'Socloz\MonitoringBundle\Profiler\Xhprof');
         }
     }
 

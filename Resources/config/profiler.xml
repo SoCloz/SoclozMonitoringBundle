@@ -6,7 +6,6 @@
 
     <parameters>
         <parameter key="socloz_monitoring.profiler.listener.class">Socloz\MonitoringBundle\Listener\Profiler</parameter>
-        <parameter key="socloz_monitoring.profiler.class">Socloz\MonitoringBundle\Profiler\Xhprof</parameter>
         <parameter key="socloz_monitoring.profiler.parser.class">Socloz\MonitoringBundle\Profiler\Parser\Parser</parameter>
         <parameter key="socloz_monitoring.profiler.probe.class">Socloz\MonitoringBundle\Profiler\Probe</parameter>
         <parameter key="socloz_monitoring.profiler.probe.definition.mongodb.calls" type="collection">
