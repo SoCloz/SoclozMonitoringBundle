@@ -12,8 +12,7 @@ namespace Socloz\MonitoringBundle\Listener;
 
 use Socloz\MonitoringBundle\Notify\Logger;
 use Socloz\MonitoringBundle\Notify\StatsD\StatsDInterface;
-use Socloz\MonitoringBundle\Profiler\Xhprof;
-use Symfony\Component\EventDispatcher\Event;
+use Socloz\MonitoringBundle\Profiler\AbstractProfiler;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -25,7 +24,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 class Profiler
 {
     /**
-     * @var Xhprof
+     * @var AbstractProfiler
      */
     protected $profiler;
 
@@ -50,12 +49,12 @@ class Profiler
     protected $profiling;
 
     /**
-     * @param Xhprof          $profiler
-     * @param StatsDInterface $statsd
-     * @param Logger          $logger
-     * @param int             $sampling
+     * @param AbstractProfiler $profiler
+     * @param StatsDInterface  $statsd
+     * @param Logger           $logger
+     * @param int              $sampling
      */
-    public function __construct(Xhprof $profiler, StatsDInterface $statsd, Logger $logger = null, $sampling = 100)
+    public function __construct(AbstractProfiler $profiler, StatsDInterface $statsd, Logger $logger = null, $sampling = 100)
     {
         $this->profiler = $profiler;
         $this->statsd = $statsd;
