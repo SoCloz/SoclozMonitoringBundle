@@ -1,6 +1,6 @@
 <?php
 
-namespace Socloz\MonitoringBundle\Tests\Profiler\Monolog;
+namespace Socloz\MonitoringBundle\Tests\RequestId\Monolog;
 
 use Socloz\MonitoringBundle\RequestId\Generator;
 use Socloz\MonitoringBundle\RequestId\Monolog\Processor;

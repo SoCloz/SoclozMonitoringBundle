@@ -1,6 +1,6 @@
 <?php
 
-namespace Socloz\MonitoringBundle\Tests\Profiler\Adapters;
+namespace Socloz\MonitoringBundle\Tests\RequestId\Adapters;
 
 use Guzzle\Common\Event;
 use Guzzle\Http\Message\Request;
