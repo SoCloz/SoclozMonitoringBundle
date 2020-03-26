@@ -1,6 +1,6 @@
 <?php
 
-namespace Socloz\MonitoringBundle\Tests\Profiler;
+namespace Socloz\MonitoringBundle\Tests\RequestId;
 
 use Socloz\MonitoringBundle\Tests\WebTestCase;
 

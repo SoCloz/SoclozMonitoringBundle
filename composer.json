@@ -27,12 +27,12 @@
         "symfony/framework-bundle": "~2.3|~3.0",
         "symfony/browser-kit": "~2.3|~3.0",
         "symfony/twig-bundle": "~2.3|~3.0",
-        "sensio/framework-extra-bundle": "@stable",
+        "sensio/framework-extra-bundle": "~2.0|~3.0",
         "guzzle/guzzle" : "@stable",
         "swiftmailer/swiftmailer": "@stable"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable"
+        "phpunit/phpunit": "^5.7.27"
     },
     "autoload": {
         "psr-4": {"Socloz\\MonitoringBundle\\": ""}

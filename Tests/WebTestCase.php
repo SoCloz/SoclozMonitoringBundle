@@ -3,7 +3,6 @@
 namespace Socloz\MonitoringBundle\Tests;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as BaseWebTestCase;
-use Socloz\MonitoringBundle\Tests\Fixtures\TestKernel;
 
 abstract class WebTestCase extends BaseWebTestCase
 {
@@ -21,7 +20,7 @@ abstract class WebTestCase extends BaseWebTestCase
     {
         require_once __DIR__.'/Fixtures/app/TestKernel.php';
 
-        return new TestKernel(
+        return new \TestKernel(
             'default',
             isset($options['debug']) ? $options['debug'] : true
         );
